@@ -89,7 +89,7 @@ public class MangerParks extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(7, 168, 1));
-        jLabel7.setText("Or IP:");
+        jLabel7.setText("or IP:");
 
         jButton1.setText("Find");
 
