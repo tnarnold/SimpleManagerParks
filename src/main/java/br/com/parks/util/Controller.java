@@ -30,11 +30,11 @@ public class Controller {
     private Expect e = null;
     private OLT olt = null;
     private InputStream is = null;
-    private StringUtil cmdr=new StringUtil();
+    private StringUtil cmdr = new StringUtil();
 
     public Controller(String ip, String user, String pass) {
         if (olt == null) {
-            OLT o=new OLT();
+
             try {
                 s = jsch.getSession(user, ip);
                 s.setConfig("StrictHostKeyChecking", "no");
@@ -56,17 +56,18 @@ public class Controller {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            } 
-            e.send("show inventory\n");
-            e.expect("# ");
-            o.setSerial(cmdr.oltGetSerial(e.before));
+            }
             
-            olt=o;
         }
 
     }
 
     public OLT getOlt() {
+        OLT o = new OLT();
+        e.send("show inventory\n");
+        e.expect("# ");
+        o.setSerial(cmdr.oltGetSerial(e.before));
+        olt = o;
         return olt;
     }
 
@@ -76,5 +77,22 @@ public class Controller {
 
     public List<ONU> getOnuByIp(OLT olt, String ip) {
         return new ArrayList<ONU>();
+    }
+    
+    public List<String> getFlowProfiles(){
+        ArrayList<String> fps=new ArrayList<String>();
+        e.send("show gpon profile flow\n");
+        e.expect("#");
+        String[] lfp=e.before.split("[\\n\\r]+");
+        if (lfp.length>1) {
+            for (int i = 0; i < lfp.length; i++) {
+                if (lfp[i].contains("Index")) {
+                    fps.add(lfp[i - 1].trim());
+                }                
+            }
+        }else{
+            fps=null;
+        }
+        return fps;
     }
 }

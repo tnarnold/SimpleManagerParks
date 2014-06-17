@@ -28,4 +28,8 @@ public class StringUtil {
         }
         return ip;
     }
+    
+    public String oltGetHostname(String in){
+        return in.trim();
+    }
 }

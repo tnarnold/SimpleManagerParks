@@ -14,13 +14,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import junit.framework.TestCase;
+import static junit.framework.TestCase.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
  * @author tiago
  */
-public class StringUtilTest extends TestCase {
+public class StringUtilTest  {
 
     private JSch jsch = new JSch();
     private Session s = null;
@@ -30,8 +32,8 @@ public class StringUtilTest extends TestCase {
     private InputStream is = null;
     private StringUtil cmdr = new StringUtil();
 
-    @Override
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         try {
             s = jsch.getSession("admin", "192.168.201.130");
             s.setConfig("StrictHostKeyChecking", "no");
@@ -56,6 +58,7 @@ public class StringUtilTest extends TestCase {
         }
     }
 
+    @Test
     public void testOltGetSerial() {
         System.out.println("Test transform data of collected olt serial command:");
         String serial = "B53B28";
@@ -65,12 +68,23 @@ public class StringUtilTest extends TestCase {
 
     }
 
+    @Test
     public void testOltGetMgmtIP() {
         System.out.println("Test collecting management interface ip:");
-        String mgmtIp="192.168.201.130/23";
+        String mgmtIp = "192.168.201.130/23";
         e.send("show interface mgmt\n");
         e.expect("#");
         assertEquals(mgmtIp, cmdr.oltGetMgmtIP(e.before));
+    }
+    
+    @Test
+    public void testOltGetHostname() {
+        System.out.println("Test collected hostname of OLT:");
+        String hn = "oltsiplab";
+        e.send("\n");
+        e.expect("#");
+        String result = cmdr.oltGetHostname(e.before);
+        assertEquals(hn, result);
     }
 
 }

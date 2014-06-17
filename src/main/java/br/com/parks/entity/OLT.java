@@ -16,6 +16,7 @@ public class OLT {
     private String mgmtIP;
     private String mgmtMac;
     private String mgmtBc;
+    private String mgmtIPinband;
     private String serial;
     private String hostname;
     private List<String> flowProfiles;
