@@ -31,34 +31,35 @@ public class Controller {
     private OLT olt = null;
     private InputStream is = null;
     private StringUtil cmdr = new StringUtil();
+    private String user;
+    private String pass;
+    private String ipAccess;
 
     public Controller(String ip, String user, String pass) {
-        if (olt == null) {
+        try {
+            s = jsch.getSession(user, ip);
+            s.setConfig("StrictHostKeyChecking", "no");
+            s.setPassword(pass);
+            s.connect();
+            c = s.openChannel("shell");
+            is = c.getInputStream();
+            is.mark(40000);
+            e = new Expect(is, c.getOutputStream());
+            c.connect();
+            e.send("\n");
+            e.expect("Username:");
+            e.send(user + "\n");
+            e.expect("Password:");
+            e.send(pass + "\n");
+            e.expect("#");
 
-            try {
-                s = jsch.getSession(user, ip);
-                s.setConfig("StrictHostKeyChecking", "no");
-                s.setPassword(pass);
-                s.connect();
-                c = s.openChannel("shell");
-                is = c.getInputStream();
-                is.mark(40000);
-                e = new Expect(is, c.getOutputStream());
-                c.connect();
-                e.send("\n");
-                e.expect("Username:");
-                e.send(user + "\n");
-                e.expect("Password:");
-                e.send(pass + "\n");
-                e.expect("#");
-
-            } catch (JSchException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
+        } catch (JSchException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
         }
+        this.user = user;
+        this.pass = pass;
 
     }
 
@@ -67,32 +68,69 @@ public class Controller {
         e.send("show inventory\n");
         e.expect("# ");
         o.setSerial(cmdr.oltGetSerial(e.before));
+        e.send("show interface mgmt\n");
+        e.expect("#");
+        o.setMgmtIP(cmdr.oltGetMgmtIP(e.before));
+        e.send("\n");
+        e.expect("#");
+        o.setHostname(cmdr.oltGetHostname(e.before));
+        o.setFlowProfiles(getFlowProfiles());
+        o.setVlanTranslate(getVlanTranslationProfiles());
+        o.setUser(user);
+        o.setPass(pass);
         olt = o;
         return olt;
     }
 
-    public List<ONU> getOnuBySerial(OLT olt, String serial) {
+    public ONU getOnu(String serial) {
+        return new ONU();
+    }
+
+    public List<ONU> getOnus() {
         return new ArrayList<ONU>();
     }
 
-    public List<ONU> getOnuByIp(OLT olt, String ip) {
-        return new ArrayList<ONU>();
+    public boolean provisionOnu(ONU onu) {
+
+        return false;
     }
-    
-    public List<String> getFlowProfiles(){
-        ArrayList<String> fps=new ArrayList<String>();
+
+    public List<String> getFlowProfiles() {
+        ArrayList<String> fps = new ArrayList<String>();
         e.send("show gpon profile flow\n");
         e.expect("#");
-        String[] lfp=e.before.split("[\\n\\r]+");
-        if (lfp.length>1) {
+        String[] lfp = e.before.split("[\\n\\r]+");
+        if (lfp.length > 1) {
             for (int i = 0; i < lfp.length; i++) {
                 if (lfp[i].contains("Index")) {
                     fps.add(lfp[i - 1].trim());
-                }                
+                }
             }
-        }else{
-            fps=null;
+        } else {
+            fps = null;
         }
         return fps;
+    }
+
+    public List<String> getVlanTranslationProfiles() {
+        ArrayList<String> vps = new ArrayList<String>();
+        e.send("show gpon profile vlan-translation\n");
+        e.expect("#");
+        String[] lfp = e.before.split("[\\n\\r]+");
+        if (lfp.length > 1) {
+            for (int i = 0; i < lfp.length; i++) {
+                if (lfp[i].contains("Index")) {
+                    vps.add(lfp[i - 1].replace(":", "").trim());
+                }
+            }
+        } else {
+            vps = null;
+        }
+        return vps;
+    }
+
+    public void disconnect() {
+        e.close();
+        s.disconnect();
     }
 }

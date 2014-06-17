@@ -19,6 +19,9 @@ public class OLT {
     private String mgmtIPinband;
     private String serial;
     private String hostname;
+    private String user;
+    private String pass;
+    private String ipAccess;
     private List<String> flowProfiles;
     private List<String> vlanTranslate;
 
@@ -61,6 +64,28 @@ public class OLT {
     public void setVlanTranslate(List<String> vlanTranslate) {
         this.vlanTranslate = vlanTranslate;
     }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getPass() {
+        return pass;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public String getIpAccess() {
+        return ipAccess;
+    }
+    
+    
     
     
 }
