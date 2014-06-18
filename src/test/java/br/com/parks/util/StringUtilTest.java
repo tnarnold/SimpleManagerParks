@@ -22,7 +22,7 @@ import org.junit.Test;
  *
  * @author tiago
  */
-public class StringUtilTest  {
+public class StringUtilTest {
 
     private JSch jsch = new JSch();
     private Session s = null;
@@ -76,7 +76,7 @@ public class StringUtilTest  {
         e.expect("#");
         assertEquals(mgmtIp, cmdr.oltGetMgmtIP(e.before));
     }
-    
+
     @Test
     public void testOltGetHostname() {
         System.out.println("Test collected hostname of OLT:");
@@ -85,6 +85,27 @@ public class StringUtilTest  {
         e.expect("#");
         String result = cmdr.oltGetHostname(e.before);
         assertEquals(hn, result);
+    }
+
+    @Test
+    public void testOnuGetClean() {
+        System.out.println("Test if result is clean");
+        String rc = "Interface gpon1/1:\n"
+                + "Interface gpon1/2:\n"
+                + "Interface gpon1/3:\n"
+                + "Interface gpon1/4:\n"
+                + "Interface gpon2/1:\n"
+                + "Interface gpon2/2:\n"
+                + "Interface gpon2/3:\n"
+                + "    1-prks00b6150f:\n"
+                + "    2-br1 (prks00b4ce4e):\n"
+                + "	IP address 192.168.2.10/24\n"
+                + "	Flow profile: br2.2.2pr2\n"
+                + "Interface gpon2/4:";
+        e.send("show gpon onu\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        e.expect("#");
+        String onus = cmdr.onuGetClean(e.before);
+        assertEquals(rc, onus);
     }
 
 }

@@ -62,6 +62,35 @@ public class ControllerOnu {
     }
 
     public List<ONU> getOnus() {
+        e.send("show gpon onu\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        e.expect("#");
+        ArrayList<ONU> onus = new ArrayList<ONU>();
+        String resp = cmdr.onuGetClean(e.before);
+        String[] gpon = resp.split("Interface ");
+
+        for (int i = 0; i < gpon.length; i++) {
+            if (gpon[i].contains("    ")) {
+                String[] onu = gpon[i].split("\\s\\s\\s\\s");
+                for (int j = 0; j < onu.length; j++) {
+                    ONU o = new ONU();
+                    if (!onu[j].contains("gpon")) {
+                        o.setIndex(Integer.valueOf(onu[j].substring(0, onu[j].indexOf("-")).trim()));
+                        o.setIfGpon(onu[j].replace(":", ""));
+                        String[] onup = onu[j].split("\n");
+                        for (int k = 0; k < onup.length; k++) {
+                            if (onup[k].contains("\t")) {
+                                if (onup[k].contains("IP address")) {
+                                    o.setMgmtIp(onup[k].replace("IP address", "").trim());
+                                }
+                                if (onup[k].contains("Flow profile: ")) {
+                                    o.setFlowProfile(onup[k].replace("Flow profile: ", "").trim());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return new ArrayList<ONU>();
     }
 
@@ -72,8 +101,8 @@ public class ControllerOnu {
     public List<ONU> getOnuByIp(OLT olt, String ip) {
         return new ArrayList<ONU>();
     }
-    
-    public List<ONU> getOnusWithStatus(){
+
+    public List<ONU> getOnusWithStatus() {
         return new ArrayList();
     }
 

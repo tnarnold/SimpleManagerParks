@@ -35,9 +35,9 @@ public class Controller {
     private String pass;
     private String ipAccess;
 
-    public Controller(String ip, String user, String pass) {
+    public Controller(String ipAccess, String user, String pass) {
         try {
-            s = jsch.getSession(user, ip);
+            s = jsch.getSession(user, ipAccess);
             s.setConfig("StrictHostKeyChecking", "no");
             s.setPassword(pass);
             s.connect();
@@ -60,6 +60,7 @@ public class Controller {
         }
         this.user = user;
         this.pass = pass;
+        this.ipAccess = ipAccess;
 
     }
 
@@ -78,6 +79,7 @@ public class Controller {
         o.setVlanTranslate(getVlanTranslationProfiles());
         o.setUser(user);
         o.setPass(pass);
+        o.setIpAccess(ipAccess);
         olt = o;
         return olt;
     }
@@ -132,5 +134,7 @@ public class Controller {
     public void disconnect() {
         e.close();
         s.disconnect();
+        c.disconnect();
+        jsch = null; // Better for the garbage collector?
     }
 }

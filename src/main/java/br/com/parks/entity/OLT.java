@@ -84,6 +84,12 @@ public class OLT {
     public String getIpAccess() {
         return ipAccess;
     }
+
+    public void setIpAccess(String ipAccess) {
+        this.ipAccess = ipAccess;
+    }
+    
+    
     
     
     

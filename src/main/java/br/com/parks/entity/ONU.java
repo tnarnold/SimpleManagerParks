@@ -10,8 +10,10 @@ package br.com.parks.entity;
  * @author tiago
  */
 public class ONU {
-
+    
+    private int index;
     private String serial;
+    private String ifGpon;
     private String mgmtIp;
     private String mgmtMacAddr;
     private String lanIp;
@@ -21,6 +23,24 @@ public class ONU {
     private String iface;
     private String flowProfile;
 
+    public ONU() {
+    }
+
+    public ONU(int index, String serial, String ifGpon) {
+        this.index = index;
+        this.serial = serial;
+        this.ifGpon = ifGpon;
+    }
+
+    
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+    
     public String getSerial() {
         return serial;
     }
@@ -92,5 +112,15 @@ public class ONU {
     public void setFlowProfile(String flowProfile) {
         this.flowProfile = flowProfile;
     }
+
+    public String getIfGpon() {
+        return ifGpon;
+    }
+
+    public void setIfGpon(String ifGpon) {
+        this.ifGpon = ifGpon;
+    }
+    
+    
 
 }
