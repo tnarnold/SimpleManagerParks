@@ -140,6 +140,28 @@ public class ONU {
     public void setVlanTranslate(List<String> vlanTranslate) {
         this.vlanTranslate = vlanTranslate;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash + (this.serial != null ? this.serial.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ONU other = (ONU) obj;
+        if ((this.serial == null) ? (other.serial != null) : !this.serial.equals(other.serial)) {
+            return false;
+        }
+        return true;
+    }
     
     
 

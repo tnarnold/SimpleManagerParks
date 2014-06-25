@@ -52,9 +52,9 @@ public class StringUtilTest {
             e.expect("#");
 
         } catch (JSchException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

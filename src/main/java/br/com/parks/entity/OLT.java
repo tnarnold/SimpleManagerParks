@@ -88,6 +88,30 @@ public class OLT {
     public void setIpAccess(String ipAccess) {
         this.ipAccess = ipAccess;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 59 * hash + (this.serial != null ? this.serial.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final OLT other = (OLT) obj;
+        if ((this.serial == null) ? (other.serial != null) : !this.serial.equals(other.serial)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
     
     
     
