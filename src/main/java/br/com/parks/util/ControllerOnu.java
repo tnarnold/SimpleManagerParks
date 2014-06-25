@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,32 +67,51 @@ public class ControllerOnu {
         e.expect("#");
         ArrayList<ONU> onus = new ArrayList<ONU>();
         String resp = cmdr.onuGetClean(e.before);
-        String[] gpon = resp.split("Interface ");
+        String[] ifPon = resp.split("Interface ");
+        for (int i = 0; i < ifPon.length; i++) {
+            if (ifPon[i].length() > 10) {
+                String[] onu = ifPon[i].replaceAll("\t( )( )( )( )", "#").split("\n( )( )( )( )");
 
-        for (int i = 0; i < gpon.length; i++) {
-            if (gpon[i].contains("    ")) {
-                String[] onu = gpon[i].split("\\s\\s\\s\\s");
                 for (int j = 0; j < onu.length; j++) {
-                    ONU o = new ONU();
-                    if (!onu[j].contains("gpon")) {
-                        o.setIndex(Integer.valueOf(onu[j].substring(0, onu[j].indexOf("-")).trim()));
-                        o.setIfGpon(onu[j].replace(":", ""));
-                        String[] onup = onu[j].split("\n");
-                        for (int k = 0; k < onup.length; k++) {
-                            if (onup[k].contains("\t")) {
-                                if (onup[k].contains("IP address")) {
-                                    o.setMgmtIp(onup[k].replace("IP address", "").trim());
-                                }
-                                if (onup[k].contains("Flow profile: ")) {
-                                    o.setFlowProfile(onup[k].replace("Flow profile: ", "").trim());
+                    if (!onu[j].trim().startsWith("gpon")) {
+                        ONU o = new ONU();
+                        o.setIfGpon(onu[0].replaceAll(":", "").trim());
+                        String[] pOnu = onu[j].split("\t");
+                        for (int p = 0; p < pOnu.length; p++) {
+                            if (pOnu[p].trim().matches(".*prks.*")) {
+                                o.setIndex(Integer.valueOf(pOnu[p].substring(0, pOnu[p].indexOf("-"))));
+                                o.setSerial(pOnu[p].substring(pOnu[p].indexOf("prks"), pOnu[p].indexOf("prks") + 12));
+                                if (!pOnu[p].startsWith("prks", pOnu[p].indexOf("-") + 1)) {
+                                    o.setAlias(pOnu[p].substring(pOnu[p].indexOf("-") + 1, pOnu[p].indexOf("(")).trim());
                                 }
                             }
+
+                            if (pOnu[p].contains("IP address")) {
+                                o.setMgmtIp(pOnu[p].replaceAll("IP address ", "").trim());
+                            }
+                            if (pOnu[p].contains("Flow profile:")) {
+                                o.setFlowProfile(pOnu[p].replaceAll("Flow profile: ", "").trim());
+                            }
+
+                            if (pOnu[p].contains("Ports VLAN translation")) {
+                                ArrayList<String> vtps = new ArrayList<String>();
+                                String rhead = pOnu[p].replaceAll("Ports VLAN translation profile:\n#", "");
+                                String[] vtp = rhead.split("\n#");
+                                for (int vt = 0; vt < vtp.length; vt++) {
+                                    vtps.add(vtp[vt].trim());
+                                }
+                                o.setVlanTranslate(vtps);
+                            }
+                        }
+                        if (o != null && o.getIndex() > 0) {
+                            onus.add(o);
                         }
                     }
+
                 }
             }
         }
-        return new ArrayList<ONU>();
+        return onus;
     }
 
     public List<ONU> getOnuBySerial(OLT olt, String serial) {

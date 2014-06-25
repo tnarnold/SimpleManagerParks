@@ -5,6 +5,8 @@
  */
 package br.com.parks.entity;
 
+import java.util.List;
+
 /**
  *
  * @author tiago
@@ -13,6 +15,7 @@ public class ONU {
     
     private int index;
     private String serial;
+    private String alias;
     private String ifGpon;
     private String mgmtIp;
     private String mgmtMacAddr;
@@ -22,6 +25,7 @@ public class ONU {
     private String pass;
     private String iface;
     private String flowProfile;
+    private List<String> vlanTranslate;
 
     public ONU() {
     }
@@ -39,6 +43,14 @@ public class ONU {
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
     
     public String getSerial() {
@@ -119,6 +131,14 @@ public class ONU {
 
     public void setIfGpon(String ifGpon) {
         this.ifGpon = ifGpon;
+    }
+
+    public List<String> getVlanTranslate() {
+        return vlanTranslate;
+    }
+
+    public void setVlanTranslate(List<String> vlanTranslate) {
+        this.vlanTranslate = vlanTranslate;
     }
     
     

@@ -7,9 +7,7 @@ package br.com.parks.util;
 
 import br.com.parks.entity.OLT;
 import java.util.ArrayList;
-import java.util.List;
 import static org.junit.Assert.assertEquals;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,8 +22,10 @@ public class ControllerTest {
     public void testGetFlowProfiles() {
         System.out.println("Testing if get all flow profiles:");
         ArrayList<String> pfs = new ArrayList<String>();
-        pfs.add("br2.2.2pr2");
+        pfs.add("bridge_profile");
+        pfs.add("router_profile");
         assertEquals(pfs.get(0), c.getFlowProfiles().get(0));
+        assertEquals(pfs.get(1), c.getFlowProfiles().get(1));
     }
 
     @Test
@@ -33,7 +33,7 @@ public class ControllerTest {
         System.out.println("Testing if get all Vlan Translation Profiles:");
         ArrayList<String> vpts = new ArrayList<String>();
         vpts.add("_100");
-        vpts.add("_8");
+        vpts.add("_101");
         assertEquals(vpts.get(0), c.getVlanTranslationProfiles().get(0));
         assertEquals(vpts.get(1), c.getVlanTranslationProfiles().get(1));
     }
@@ -49,9 +49,9 @@ public class ControllerTest {
         olt.setSerial("B53B28");
         ArrayList<String> fps=new ArrayList<String>();
         ArrayList<String> vtps=new ArrayList<String>();
-        fps.add("br2.2.2pr2");
+        fps.add("router_profile");
         vtps.add("_100");
-        vtps.add("_8");
+        vtps.add("_101");
         olt.setFlowProfiles(fps);
         olt.setVlanTranslate(vtps);
         assertEquals(olt.getSerial(), oltResult.getSerial());
