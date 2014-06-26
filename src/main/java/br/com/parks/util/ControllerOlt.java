@@ -40,7 +40,7 @@ public class ControllerOlt {
             s = jsch.getSession(user, ipAccess);
             s.setConfig("StrictHostKeyChecking", "no");
             s.setPassword(pass);
-            s.connect();
+            s.connect(100);
             c = s.openChannel("shell");
             is = c.getInputStream();
             is.mark(40000);
@@ -88,6 +88,16 @@ public class ControllerOlt {
         return new ONU();
     }
 
+    public List<ONU> getOnusBySerial(String serial){
+        List<ONU> onus=getOnus();
+        for(ONU o:getOnus()){
+            if(o.getSerial().contains(serial)){
+                onus.add(o);
+            }
+        }
+        return onus;
+    }
+    
     public List<ONU> getOnus() {
         e.send("show gpon onu\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         e.expect("#");
