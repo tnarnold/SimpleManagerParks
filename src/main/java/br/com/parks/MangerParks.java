@@ -5,12 +5,12 @@
  */
 package br.com.parks;
 
+import br.com.parks.entity.OLT;
 import br.com.parks.entity.ONU;
 import br.com.parks.util.ControllerOlt;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
-import javax.swing.JPanel;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
@@ -20,13 +20,18 @@ import javax.swing.table.DefaultTableModel;
  */
 public class MangerParks extends javax.swing.JFrame {
 
+    private ControllerOlt colt;
+    private OLT cOlt;
+    private ONU selectedOnu;
+    private List<ONU> cOnus;
+
     /**
      * Creates new form MangerParks
      */
     public MangerParks() {
-        initComponents();        
-        tabbedPanel.add(new OnuPanel());
-        tabbedPanel.setTitleAt(1, "ONU1");
+        initComponents();
+        colt = new ControllerOlt();
+      
     }
 
     /**
@@ -71,11 +76,19 @@ public class MangerParks extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         txtMgmtIpOlt.setText("192.168.201.130");
 
         lbMgmtOlt.setForeground(new java.awt.Color(29, 23, 230));
-        lbMgmtOlt.setText("Man. IP OLT:");
+        lbMgmtOlt.setText("Mgmt IP OLT:");
 
         lbSerialONU.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
         lbSerialONU.setForeground(new java.awt.Color(7, 168, 1));
@@ -129,10 +142,15 @@ public class MangerParks extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tbOnus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbOnusMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbOnus);
         if (tbOnus.getColumnModel().getColumnCount() > 0) {
-            tbOnus.getColumnModel().getColumn(0).setMinWidth(60);
-            tbOnus.getColumnModel().getColumn(0).setMaxWidth(60);
+            tbOnus.getColumnModel().getColumn(0).setMinWidth(70);
+            tbOnus.getColumnModel().getColumn(0).setMaxWidth(70);
             tbOnus.getColumnModel().getColumn(1).setMinWidth(40);
             tbOnus.getColumnModel().getColumn(1).setMaxWidth(40);
         }
@@ -205,7 +223,7 @@ public class MangerParks extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -287,14 +305,15 @@ public class MangerParks extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tabbedPanel)
-                .addContainerGap())
+                .addComponent(tabbedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        colt.disconnect();
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
@@ -307,17 +326,46 @@ public class MangerParks extends javax.swing.JFrame {
     }//GEN-LAST:event_txtSerialOnuActionPerformed
 
     private void btFindOnusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFindOnusActionPerformed
-        ControllerOlt colt = new ControllerOlt(txtMgmtIpOlt.getText(), txtUserOlt.getText(), txtPassOlt.getText());
-        displayResultOnuTable(colt.getOnus());
-        colt.disconnect();
+        if (!txtUserOlt.getText().isEmpty() && !txtPassOlt.getText().isEmpty()) {
+            cleanDisplayedResults();
+            colt.setUser(txtUserOlt.getText());
+            colt.setPass(txtPassOlt.getText());
+            colt.setIpAccess(txtMgmtIpOlt.getText());
+            colt.connect();
+            cOnus = colt.getOnus();
+            if (txtSerialOnu.getText().isEmpty()) {
+                displayResultOnuTable(cOnus);
+            } else {
+                displayResultOnuTable(colt.getOnusBySerial(txtSerialOnu.getText(), cOnus));
+            }
+            colt.disconnect();
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "User or password is empty!");
+        }
     }//GEN-LAST:event_btFindOnusActionPerformed
 
     private void btCleanTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCleanTableActionPerformed
-        DefaultTableModel dtm = (DefaultTableModel) tbOnus.getModel();
-        while (dtm.getRowCount() > 0) {
-            dtm.removeRow(0);
-        }
+        cleanDisplayedResults();
     }//GEN-LAST:event_btCleanTableActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        colt.disconnect();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        txtMgmtIpOlt.requestFocus();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void tbOnusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOnusMouseClicked
+        if (evt.getClickCount() == 2 && cOnus != null) {
+            int row = tbOnus.getSelectedRow();
+            ONU o = colt.getOnu(tbOnus.getModel().getValueAt(row, 2).toString(), cOnus);
+            OnuPanel op = new OnuPanel(tabbedPanel, o);
+            tabbedPanel.add(op);
+            tabbedPanel.setTitleAt(1, o.getSerial());
+            
+        }
+    }//GEN-LAST:event_tbOnusMouseClicked
 
     /**
      * @param args the command line arguments
@@ -389,5 +437,15 @@ public class MangerParks extends javax.swing.JFrame {
             dtm.addRow(new String[]{o.getIfGpon(), Integer.toString(o.getIndex()), o.getSerial(), o.getMgmtIp()});
         }
         tbOnus.setModel(dtm);
+    }
+
+    /**
+     * Clean the table of ONUs result
+     */
+    private void cleanDisplayedResults() {
+        DefaultTableModel dtm = (DefaultTableModel) tbOnus.getModel();
+        while (dtm.getRowCount() > 0) {
+            dtm.removeRow(0);
+        }
     }
 }

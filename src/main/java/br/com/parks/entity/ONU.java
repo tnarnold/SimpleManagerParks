@@ -26,6 +26,7 @@ public class ONU {
     private String iface;
     private String flowProfile;
     private List<String> vlanTranslate;
+    private OLT olt;
 
     public ONU() {
     }
@@ -140,6 +141,16 @@ public class ONU {
     public void setVlanTranslate(List<String> vlanTranslate) {
         this.vlanTranslate = vlanTranslate;
     }
+
+    public OLT getOlt() {
+        return olt;
+    }
+
+    public void setOlt(OLT olt) {
+        this.olt = olt;
+    }
+    
+    
 
     @Override
     public int hashCode() {

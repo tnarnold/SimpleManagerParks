@@ -9,7 +9,9 @@ import br.com.parks.entity.OLT;
 import br.com.parks.entity.ONU;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.After;
 import static org.junit.Assert.assertEquals;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -18,8 +20,19 @@ import org.junit.Test;
  */
 public class ControllerOltTest {
 
-    ControllerOlt c = new ControllerOlt("192.168.201.130", "admin", "parks");
+    ControllerOlt c;
 
+    @Before
+    public void setUp() {
+        c = new ControllerOlt("192.168.201.130", "admin", "parks");
+        c.connect();
+    }
+    
+    @After
+    public void tearDown() {
+        c.disconnect();
+    }
+    
     @Test
     public void testGetFlowProfiles() {
         System.out.println("Testing if get all flow profiles:");

@@ -13,6 +13,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,7 +25,7 @@ import java.util.logging.Logger;
  */
 public class ControllerOlt {
 
-    private JSch jsch = new JSch();
+    private JSch jsch = null;
     private Session s = null;
     private Channel c = null;
     private Expect e = null;
@@ -36,32 +37,26 @@ public class ControllerOlt {
     private String ipAccess;
 
     public ControllerOlt(String ipAccess, String user, String pass) {
-        try {
-            s = jsch.getSession(user, ipAccess);
-            s.setConfig("StrictHostKeyChecking", "no");
-            s.setPassword(pass);
-            s.connect(100);
-            c = s.openChannel("shell");
-            is = c.getInputStream();
-            is.mark(40000);
-            e = new Expect(is, c.getOutputStream());
-            c.connect();
-            e.send("\n");
-            e.expect("Username:");
-            e.send(user + "\n");
-            e.expect("Password:");
-            e.send(pass + "\n");
-            e.expect("#");
-
-        } catch (JSchException ex) {
-            Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
-        }
         this.user = user;
         this.pass = pass;
         this.ipAccess = ipAccess;
+        jsch = new JSch();
+    }
 
+    public ControllerOlt() {
+        jsch = new JSch();
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
+
+    public void setIpAccess(String ipAccess) {
+        this.ipAccess = ipAccess;
     }
 
     public OLT getOlt() {
@@ -80,6 +75,7 @@ public class ControllerOlt {
         o.setUser(user);
         o.setPass(pass);
         o.setIpAccess(ipAccess);
+        o.setOnus(getOnus());
         olt = o;
         return olt;
     }
@@ -88,16 +84,48 @@ public class ControllerOlt {
         return new ONU();
     }
 
-    public List<ONU> getOnusBySerial(String serial){
-        List<ONU> onus=getOnus();
-        for(ONU o:getOnus()){
-            if(o.getSerial().contains(serial)){
+    public ONU getOnu(String serial, List<ONU> os) {
+        ONU onu = null;
+        for (ONU o : os) {
+            if (o.getSerial().equals(serial)) {
+                onu = o;
+            }
+        }
+        return onu;
+    }
+
+    /**
+     * Get an ONU list by serial number of equipment
+     * @param serial
+     * @return List of ONUs
+     */
+    public List<ONU> getOnusBySerial(String serial) {
+        List<ONU> onus = new ArrayList<ONU>();
+        for (ONU o : getOnus()) {
+            if (o.getSerial().contains(serial)) {
                 onus.add(o);
             }
         }
         return onus;
     }
-    
+
+    /**
+     * Return the ONU in an especified list of ONUs
+     *
+     * @param serial serial number of ONU
+     * @param os List of ONUs collected before
+     * @return
+     */
+    public List<ONU> getOnusBySerial(String serial, List<ONU> os) {
+        List<ONU> onus = new ArrayList<ONU>();
+        for (ONU o : os) {
+            if (o.getSerial().contains(serial)) {
+                onus.add(o);
+            }
+        }
+        return onus;
+    }
+
     public List<ONU> getOnus() {
         e.send("show gpon onu\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         e.expect("#");
@@ -189,10 +217,42 @@ public class ControllerOlt {
         return vps;
     }
 
-    public void disconnect() {
-        e.close();
-        s.disconnect();
-        c.disconnect();
-        jsch = null; // Better for the garbage collector?
+    public void connect() {
+        if (!user.isEmpty() && !pass.isEmpty()) {
+            try {
+                s = this.jsch.getSession(this.user, this.ipAccess);
+                s.setConfig("StrictHostKeyChecking", "no");
+                s.setPassword(pass);
+                s.connect(1000);
+                c = s.openChannel("shell");
+                is = c.getInputStream();
+                is.mark(40000);
+                e = new Expect(is, c.getOutputStream());
+                c.connect();
+                e.send("\n");
+                e.expect("Username:");
+                e.send(user + "\n");
+                e.expect("Password:");
+                e.send(pass + "\n");
+                e.expect("#");
+
+            } catch (JSchException ex) {
+                Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
+
+    public void disconnect() {
+        if (e != null && s != null) {
+            if (s.isConnected() && c.isConnected()) {
+                e.close();
+                s.disconnect();
+                c.disconnect(); // Better for the garbage collector?
+            }
+        }
+
+    }
+
 }

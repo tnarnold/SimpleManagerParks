@@ -24,6 +24,7 @@ public class OLT {
     private String ipAccess;
     private List<String> flowProfiles;
     private List<String> vlanTranslate;
+    private List<ONU> onus;
 
     public String getMgmtIP() {
         return mgmtIP;
@@ -88,6 +89,16 @@ public class OLT {
     public void setIpAccess(String ipAccess) {
         this.ipAccess = ipAccess;
     }
+
+    public List<ONU> getOnus() {
+        return onus;
+    }
+
+    public void setOnus(List<ONU> onus) {
+        this.onus = onus;
+    }
+    
+    
 
     @Override
     public int hashCode() {

@@ -7,12 +7,10 @@ package br.com.parks.util;
 
 import br.com.parks.entity.ONU;
 import java.util.ArrayList;
-import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 
 /**
  *
@@ -20,14 +18,14 @@ import org.junit.Ignore;
  */
 public class ControllerOnuTest {
 
-    ControllerOnu conu = null;
-
-    public ControllerOnuTest() {
-    }
-
+    ControllerOnu conu;
+    
     @Before
     public void setUp() {
-        conu = new ControllerOnu(new ControllerOlt("192.168.201.130", "admin", "parks").getOlt());
+        
+        ControllerOlt colt=new ControllerOlt("192.168.201.130", "admin", "parks");
+        colt.connect();
+        conu = new ControllerOnu(colt.getOlt());
     }
 
     @After
