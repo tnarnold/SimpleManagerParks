@@ -31,7 +31,7 @@ public class MangerParks extends javax.swing.JFrame {
     public MangerParks() {
         initComponents();
         colt = new ControllerOlt();
-      
+       
     }
 
     /**

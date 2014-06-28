@@ -150,8 +150,6 @@ public class ONU {
         this.olt = olt;
     }
     
-    
-
     @Override
     public int hashCode() {
         int hash = 3;
