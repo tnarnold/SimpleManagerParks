@@ -3,8 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.com.parks;
+
+import br.com.parks.entity.OLT;
+import br.com.parks.entity.ONU;
+import br.com.parks.util.ControllerOlt;
+import java.util.List;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,11 +20,18 @@ package br.com.parks;
  */
 public class MangerParks extends javax.swing.JFrame {
 
+    private ControllerOlt colt;
+    private OLT cOlt;
+    private ONU selectedOnu;
+    private List<ONU> cOnus;
+
     /**
      * Creates new form MangerParks
      */
     public MangerParks() {
         initComponents();
+        colt = new ControllerOlt();
+       
     }
 
     /**
@@ -28,23 +43,23 @@ public class MangerParks extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
-        jLabel7 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        tabbedPanel = new javax.swing.JTabbedPane();
+        tabOlt = new javax.swing.JPanel();
+        txtMgmtIpOlt = new javax.swing.JTextField();
+        lbMgmtOlt = new javax.swing.JLabel();
+        lbSerialONU = new javax.swing.JLabel();
+        txtSerialOnu = new javax.swing.JTextField();
+        lbUserOlt = new javax.swing.JLabel();
+        txtUserOlt = new javax.swing.JTextField();
+        txtMgmtOnu = new javax.swing.JTextField();
+        lbPassOlt = new javax.swing.JLabel();
+        txtPassOlt = new javax.swing.JPasswordField();
+        lbIpMgmtOnu = new javax.swing.JLabel();
+        btFindOnus = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        tbOnus = new javax.swing.JTable();
+        btCleanTable = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openMenuItem = new javax.swing.JMenuItem();
@@ -61,119 +76,158 @@ public class MangerParks extends javax.swing.JFrame {
         aboutMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setForeground(new java.awt.Color(29, 23, 230));
-        jLabel1.setText("Man. IP OLT:");
-
-        jLabel2.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(7, 168, 1));
-        jLabel2.setText("Serial ONU:");
-
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
-        jLabel3.setForeground(new java.awt.Color(29, 23, 230));
-        jLabel3.setText("User:");
+        txtMgmtIpOlt.setText("192.168.201.130");
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        lbMgmtOlt.setForeground(new java.awt.Color(29, 23, 230));
+        lbMgmtOlt.setText("Mgmt IP OLT:");
+
+        lbSerialONU.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        lbSerialONU.setForeground(new java.awt.Color(7, 168, 1));
+        lbSerialONU.setText("Serial ONU:");
+
+        txtSerialOnu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                txtSerialOnuActionPerformed(evt);
             }
         });
 
-        jLabel5.setForeground(new java.awt.Color(29, 23, 230));
-        jLabel5.setText("Pass:");
+        lbUserOlt.setForeground(new java.awt.Color(29, 23, 230));
+        lbUserOlt.setText("User:");
 
-        jLabel7.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(7, 168, 1));
-        jLabel7.setText("or IP:");
+        txtUserOlt.setText("admin");
+        txtUserOlt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUserOltActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Find");
+        lbPassOlt.setForeground(new java.awt.Color(29, 23, 230));
+        lbPassOlt.setText("Pass:");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        txtPassOlt.setText("parks");
+
+        lbIpMgmtOnu.setFont(new java.awt.Font("Ubuntu", 1, 15)); // NOI18N
+        lbIpMgmtOnu.setForeground(new java.awt.Color(7, 168, 1));
+        lbIpMgmtOnu.setText("or IP:");
+
+        btFindOnus.setText("Find");
+        btFindOnus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btFindOnusActionPerformed(evt);
+            }
+        });
+
+        tbOnus.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ifPon", "IDX", "Serial", "IP Mgmt"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true
+            };
 
-        jButton2.setText("Clear");
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbOnus.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbOnusMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbOnus);
+        if (tbOnus.getColumnModel().getColumnCount() > 0) {
+            tbOnus.getColumnModel().getColumn(0).setMinWidth(70);
+            tbOnus.getColumnModel().getColumn(0).setMaxWidth(70);
+            tbOnus.getColumnModel().getColumn(1).setMinWidth(40);
+            tbOnus.getColumnModel().getColumn(1).setMaxWidth(40);
+        }
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        btCleanTable.setText("Clear");
+        btCleanTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btCleanTableActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout tabOltLayout = new javax.swing.GroupLayout(tabOlt);
+        tabOlt.setLayout(tabOltLayout);
+        tabOltLayout.setHorizontalGroup(
+            tabOltLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabOltLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
+                .addGroup(tabOltLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(tabOltLayout.createSequentialGroup()
+                        .addGroup(tabOltLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbSerialONU)
+                            .addComponent(lbMgmtOlt))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                            .addComponent(jTextField2))
+                        .addGroup(tabOltLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtMgmtIpOlt, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
+                            .addComponent(txtSerialOnu))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel7))
+                        .addGroup(tabOltLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbUserOlt)
+                            .addComponent(lbIpMgmtOnu))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(tabOltLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(tabOltLayout.createSequentialGroup()
+                                .addComponent(txtUserOlt, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel5)
+                                .addComponent(lbPassOlt)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPasswordField1))
-                            .addComponent(jTextField5)))
+                                .addComponent(txtPassOlt))
+                            .addComponent(txtMgmtOnu)))
                     .addComponent(jSeparator1)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabOltLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btCleanTable, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btFindOnus, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        tabOltLayout.setVerticalGroup(
+            tabOltLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(tabOltLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(tabOltLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtMgmtIpOlt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbMgmtOlt)
+                    .addComponent(lbUserOlt)
+                    .addComponent(txtUserOlt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbPassOlt)
+                    .addComponent(txtPassOlt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
+                .addGroup(tabOltLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbSerialONU)
+                    .addComponent(txtSerialOnu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMgmtOnu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbIpMgmtOnu))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                .addGroup(tabOltLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btFindOnus)
+                    .addComponent(btCleanTable))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Looking", jPanel1);
+        tabbedPanel.addTab("OLT", tabOlt);
 
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
@@ -244,31 +298,74 @@ public class MangerParks extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(tabbedPanel)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+                .addComponent(tabbedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        colt.disconnect();
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void txtUserOltActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserOltActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_txtUserOltActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtSerialOnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSerialOnuActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtSerialOnuActionPerformed
+
+    private void btFindOnusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFindOnusActionPerformed
+        if (!txtUserOlt.getText().isEmpty() && !txtPassOlt.getText().isEmpty()) {
+            cleanDisplayedResults();
+            colt.setUser(txtUserOlt.getText());
+            colt.setPass(txtPassOlt.getText());
+            colt.setIpAccess(txtMgmtIpOlt.getText());
+            colt.connect();
+            cOnus = colt.getOnus();
+            if (txtSerialOnu.getText().isEmpty()) {
+                displayResultOnuTable(cOnus);
+            } else {
+                displayResultOnuTable(colt.getOnusBySerial(txtSerialOnu.getText(), cOnus));
+            }
+            colt.disconnect();
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "User or password is empty!");
+        }
+    }//GEN-LAST:event_btFindOnusActionPerformed
+
+    private void btCleanTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCleanTableActionPerformed
+        cleanDisplayedResults();
+    }//GEN-LAST:event_btCleanTableActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        colt.disconnect();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        txtMgmtIpOlt.requestFocus();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void tbOnusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOnusMouseClicked
+        if (evt.getClickCount() == 2 && cOnus != null) {
+            int row = tbOnus.getSelectedRow();
+            ONU o = colt.getOnu(tbOnus.getModel().getValueAt(row, 2).toString(), cOnus);
+            OnuPanel op = new OnuPanel(tabbedPanel, o);
+            tabbedPanel.add(op);
+            tabbedPanel.setTitleAt(1, o.getSerial());
+            
+        }
+    }//GEN-LAST:event_tbOnusMouseClicked
 
     /**
      * @param args the command line arguments
@@ -280,12 +377,7 @@ public class MangerParks extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
+            javax.swing.UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(MangerParks.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -307,6 +399,8 @@ public class MangerParks extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
+    private javax.swing.JButton btCleanTable;
+    private javax.swing.JButton btFindOnus;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
@@ -315,28 +409,43 @@ public class MangerParks extends javax.swing.JFrame {
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JLabel lbIpMgmtOnu;
+    private javax.swing.JLabel lbMgmtOlt;
+    private javax.swing.JLabel lbPassOlt;
+    private javax.swing.JLabel lbSerialONU;
+    private javax.swing.JLabel lbUserOlt;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
+    private javax.swing.JPanel tabOlt;
+    private javax.swing.JTabbedPane tabbedPanel;
+    private javax.swing.JTable tbOnus;
+    private javax.swing.JTextField txtMgmtIpOlt;
+    private javax.swing.JTextField txtMgmtOnu;
+    private javax.swing.JPasswordField txtPassOlt;
+    private javax.swing.JTextField txtSerialOnu;
+    private javax.swing.JTextField txtUserOlt;
     // End of variables declaration//GEN-END:variables
 
+    private void displayResultOnuTable(List<ONU> result) {
+        DefaultTableModel dtm = (DefaultTableModel) tbOnus.getModel();
+        for (ONU o : result) {
+            dtm.addRow(new String[]{o.getIfGpon(), Integer.toString(o.getIndex()), o.getSerial(), o.getMgmtIp()});
+        }
+        tbOnus.setModel(dtm);
+    }
+
+    /**
+     * Clean the table of ONUs result
+     */
+    private void cleanDisplayedResults() {
+        DefaultTableModel dtm = (DefaultTableModel) tbOnus.getModel();
+        while (dtm.getRowCount() > 0) {
+            dtm.removeRow(0);
+        }
+    }
 }

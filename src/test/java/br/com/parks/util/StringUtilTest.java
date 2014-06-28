@@ -52,9 +52,9 @@ public class StringUtilTest {
             e.expect("#");
 
         } catch (JSchException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -97,10 +97,25 @@ public class StringUtilTest {
                 + "Interface gpon2/1:\n"
                 + "Interface gpon2/2:\n"
                 + "Interface gpon2/3:\n"
-                + "    1-prks00b6150f:\n"
-                + "    2-br1 (prks00b4ce4e):\n"
-                + "	IP address 192.168.2.10/24\n"
-                + "	Flow profile: br2.2.2pr2\n"
+                + "    1-rt1 (prks00b25ccb):\n"
+                + "	IP address 172.31.255.101/24\n"
+                + "	Flow profile: router_profile\n"
+                + "	Ports VLAN translation profile:\n"
+                + "	    5: IPHOST (_100)\n"
+                + "	    6: VEIP (_101)\n"
+                + "    2-prks00b6150f:\n"
+                + "	IP address 172.31.255.102/24\n"
+                + "	Flow profile: router_profile\n"
+                + "	Ports VLAN translation profile:\n"
+                + "	    5: IPHOST (_100)\n"
+                + "	    6: VEIP (_101)\n"
+                + "    3-br1 (prks00b63c65):\n"
+                + "	IP address 172.31.255.201/24\n"
+                + "	Flow profile: bridge_profile\n"
+                + "	Ports VLAN translation profile:\n"
+                + "	    1: _101\n"
+                + "	    2: _101\n"
+                + "	    5: IPHOST (_100)\n"
                 + "Interface gpon2/4:";
         e.send("show gpon onu\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         e.expect("#");
