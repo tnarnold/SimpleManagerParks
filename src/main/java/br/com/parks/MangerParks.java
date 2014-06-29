@@ -7,10 +7,12 @@ package br.com.parks;
 
 import br.com.parks.entity.OLT;
 import br.com.parks.entity.ONU;
+import br.com.parks.util.CloseIcon;
 import br.com.parks.util.ControllerOlt;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 public class MangerParks extends javax.swing.JFrame {
 
     private ControllerOlt colt;
-    private OLT cOlt;
+    private OLT selectedOlt;
     private ONU selectedOnu;
     private List<ONU> cOnus;
 
@@ -31,7 +33,7 @@ public class MangerParks extends javax.swing.JFrame {
     public MangerParks() {
         initComponents();
         colt = new ControllerOlt();
-       
+        
     }
 
     /**
@@ -94,21 +96,10 @@ public class MangerParks extends javax.swing.JFrame {
         lbSerialONU.setForeground(new java.awt.Color(7, 168, 1));
         lbSerialONU.setText("Serial ONU:");
 
-        txtSerialOnu.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtSerialOnuActionPerformed(evt);
-            }
-        });
-
         lbUserOlt.setForeground(new java.awt.Color(29, 23, 230));
         lbUserOlt.setText("User:");
 
         txtUserOlt.setText("admin");
-        txtUserOlt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtUserOltActionPerformed(evt);
-            }
-        });
 
         lbPassOlt.setForeground(new java.awt.Color(29, 23, 230));
         lbPassOlt.setText("Pass:");
@@ -191,7 +182,7 @@ public class MangerParks extends javax.swing.JFrame {
                                 .addComponent(txtPassOlt))
                             .addComponent(txtMgmtOnu)))
                     .addComponent(jSeparator1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 648, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tabOltLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btCleanTable, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -306,7 +297,7 @@ public class MangerParks extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(tabbedPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -317,14 +308,6 @@ public class MangerParks extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    private void txtUserOltActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUserOltActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtUserOltActionPerformed
-
-    private void txtSerialOnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSerialOnuActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtSerialOnuActionPerformed
-
     private void btFindOnusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btFindOnusActionPerformed
         if (!txtUserOlt.getText().isEmpty() && !txtPassOlt.getText().isEmpty()) {
             cleanDisplayedResults();
@@ -332,7 +315,9 @@ public class MangerParks extends javax.swing.JFrame {
             colt.setPass(txtPassOlt.getText());
             colt.setIpAccess(txtMgmtIpOlt.getText());
             colt.connect();
+            selectedOlt=colt.getOlt();
             cOnus = colt.getOnus();
+            
             if (txtSerialOnu.getText().isEmpty()) {
                 displayResultOnuTable(cOnus);
             } else {
@@ -359,10 +344,10 @@ public class MangerParks extends javax.swing.JFrame {
     private void tbOnusMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbOnusMouseClicked
         if (evt.getClickCount() == 2 && cOnus != null) {
             int row = tbOnus.getSelectedRow();
-            ONU o = colt.getOnu(tbOnus.getModel().getValueAt(row, 2).toString(), cOnus);
-            OnuPanel op = new OnuPanel(tabbedPanel, o);
-            tabbedPanel.add(op);
-            tabbedPanel.setTitleAt(1, o.getSerial());
+            ONU onu = colt.getOnu(tbOnus.getModel().getValueAt(row, 2).toString(), cOnus);
+            OnuPanel op = new OnuPanel(tabbedPanel, onu,selectedOlt);
+            tabbedPanel.add(onu.getSerial(),op);
+            
             
         }
     }//GEN-LAST:event_tbOnusMouseClicked

@@ -6,17 +6,23 @@
 
 package br.com.parks;
 
+import br.com.parks.util.CloseIcon;
+import javax.swing.JTabbedPane;
+
 /**
  *
  * @author tiago
  */
 public class OltPanel extends javax.swing.JPanel {
 
+    JTabbedPane pane;
     /**
      * Creates new form OltPanel
      */
-    public OltPanel() {
+    public OltPanel(JTabbedPane pane) {
         initComponents();
+        this.pane=pane;
+        pane.setTabComponentAt(0, this);
     }
 
     /**
@@ -28,19 +34,31 @@ public class OltPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lbTeste = new javax.swing.JLabel();
+
+        lbTeste.setIcon(new CloseIcon());
+        lbTeste.setText("X");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(142, 142, 142)
+                .addComponent(lbTeste)
+                .addContainerGap(250, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(lbTeste)
+                .addContainerGap(193, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel lbTeste;
     // End of variables declaration//GEN-END:variables
 }

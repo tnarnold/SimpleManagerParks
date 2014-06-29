@@ -75,7 +75,6 @@ public class ControllerOlt {
         o.setUser(user);
         o.setPass(pass);
         o.setIpAccess(ipAccess);
-        o.setOnus(getOnus());
         olt = o;
         return olt;
     }
@@ -127,7 +126,10 @@ public class ControllerOlt {
     }
 
     public List<ONU> getOnus() {
-        e.send("show gpon onu\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        if(olt==null){
+            olt=getOlt();
+        }
+        e.send("show gpon onu\n\n\n\n                                                 ");
         e.expect("#");
         ArrayList<ONU> onus = new ArrayList<ONU>();
         String resp = cmdr.onuGetClean(e.before);
@@ -138,23 +140,23 @@ public class ControllerOlt {
 
                 for (int j = 0; j < onu.length; j++) {
                     if (!onu[j].trim().startsWith("gpon")) {
-                        ONU o = new ONU();
-                        o.setIfGpon(onu[0].replaceAll(":", "").trim());
+                        ONU onuTemp = new ONU();
+                        onuTemp.setIfGpon(onu[0].replaceAll(":", "").trim());
                         String[] pOnu = onu[j].split("\t");
                         for (int p = 0; p < pOnu.length; p++) {
                             if (pOnu[p].trim().matches(".*prks.*")) {
-                                o.setIndex(Integer.valueOf(pOnu[p].substring(0, pOnu[p].indexOf("-"))));
-                                o.setSerial(pOnu[p].substring(pOnu[p].indexOf("prks"), pOnu[p].indexOf("prks") + 12));
+                                onuTemp.setIndex(Integer.valueOf(pOnu[p].substring(0, pOnu[p].indexOf("-"))));
+                                onuTemp.setSerial(pOnu[p].substring(pOnu[p].indexOf("prks"), pOnu[p].indexOf("prks") + 12));
                                 if (!pOnu[p].startsWith("prks", pOnu[p].indexOf("-") + 1)) {
-                                    o.setAlias(pOnu[p].substring(pOnu[p].indexOf("-") + 1, pOnu[p].indexOf("(")).trim());
+                                    onuTemp.setAlias(pOnu[p].substring(pOnu[p].indexOf("-") + 1, pOnu[p].indexOf("(")).trim());
                                 }
                             }
 
                             if (pOnu[p].contains("IP address")) {
-                                o.setMgmtIp(pOnu[p].replaceAll("IP address ", "").trim());
+                                onuTemp.setMgmtIp(pOnu[p].replaceAll("IP address ", "").trim());
                             }
                             if (pOnu[p].contains("Flow profile:")) {
-                                o.setFlowProfile(pOnu[p].replaceAll("Flow profile: ", "").trim());
+                                onuTemp.setFlowProfile(pOnu[p].replaceAll("Flow profile: ", "").trim());
                             }
 
                             if (pOnu[p].contains("Ports VLAN translation")) {
@@ -164,17 +166,19 @@ public class ControllerOlt {
                                 for (int vt = 0; vt < vtp.length; vt++) {
                                     vtps.add(vtp[vt].trim());
                                 }
-                                o.setVlanTranslate(vtps);
+                                onuTemp.setVlanTranslate(vtps);
                             }
                         }
-                        if (o != null && o.getIndex() > 0) {
-                            onus.add(o);
+                        onuTemp.setOlt(olt);
+                        if (onuTemp != null && onuTemp.getIndex() > 0) {
+                            onus.add(onuTemp);
                         }
                     }
 
                 }
             }
         }
+        
         return onus;
     }
 
@@ -224,21 +228,32 @@ public class ControllerOlt {
                 s.setConfig("StrictHostKeyChecking", "no");
                 s.setPassword(pass);
                 s.connect(1000);
-                c = s.openChannel("shell");
-                is = c.getInputStream();
-                is.mark(40000);
-                e = new Expect(is, c.getOutputStream());
-                c.connect();
-                e.send("\n");
-                e.expect("Username:");
-                e.send(user + "\n");
-                e.expect("Password:");
-                e.send(pass + "\n");
-                e.expect("#");
+                if (s.isConnected()) {
+                    c = s.openChannel("shell");
+                    is = c.getInputStream();
+                    is.mark(40000);
+                    e = new Expect(is, c.getOutputStream());
+                    e.setDefault_timeout(10);
+                    
+                    c.connect();
+                    e.send("\n");
+                    e.expect("Username:");
+                    e.send(user + "\n");
+                    e.expect("Password:");
+                    e.send(pass + "\n");
+                    e.expectOrThrow("#");
+                    
+                }else{
+                    System.out.println("Ipossible connect to host");
+                }
 
             } catch (JSchException ex) {
                 Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
+                Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Expect.TimeoutException ex) {
+                Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Expect.EOFException ex) {
                 Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
             }
         }

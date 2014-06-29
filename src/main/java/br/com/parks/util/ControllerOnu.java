@@ -22,6 +22,8 @@ public class ControllerOnu {
     public ControllerOnu(OLT olt) {
         this.olt = olt;
         cOnus=olt.getOnus();
+        this.co = new ControllerOlt(olt.getIpAccess(), olt.getUser(), olt.getPass());
+        co.connect();
     }
 
     public ControllerOnu() {
