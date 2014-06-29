@@ -33,7 +33,7 @@ public class MangerParks extends javax.swing.JFrame {
     public MangerParks() {
         initComponents();
         colt = new ControllerOlt();
-        
+
     }
 
     /**
@@ -315,9 +315,9 @@ public class MangerParks extends javax.swing.JFrame {
             colt.setPass(txtPassOlt.getText());
             colt.setIpAccess(txtMgmtIpOlt.getText());
             colt.connect();
-            selectedOlt=colt.getOlt();
+            selectedOlt = colt.getOlt();
             cOnus = colt.getOnus();
-            
+
             if (txtSerialOnu.getText().isEmpty()) {
                 displayResultOnuTable(cOnus);
             } else {
@@ -345,10 +345,12 @@ public class MangerParks extends javax.swing.JFrame {
         if (evt.getClickCount() == 2 && cOnus != null) {
             int row = tbOnus.getSelectedRow();
             ONU onu = colt.getOnu(tbOnus.getModel().getValueAt(row, 2).toString(), cOnus);
-            OnuPanel op = new OnuPanel(tabbedPanel, onu,selectedOlt);
-            tabbedPanel.add(onu.getSerial(),op);
-            
-            
+            OnuPanel op = new OnuPanel(tabbedPanel, onu, selectedOlt);
+            if (tabbedPanel.indexOfTab(onu.getAlias()) == -1 || tabbedPanel.indexOfTab(onu.getSerial()) == -1) {
+                tabbedPanel.add(onu.getSerial(), op);
+                tabbedPanel.setSelectedComponent(op);
+            }
+
         }
     }//GEN-LAST:event_tbOnusMouseClicked
 

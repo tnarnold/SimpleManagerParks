@@ -33,7 +33,9 @@ public class OnuPanel extends javax.swing.JPanel {
         this.onu = onu;
         this.olt = olt;
         fillFields();
-
+       
+        
+        
     }
 
     /**
@@ -394,7 +396,11 @@ public class OnuPanel extends javax.swing.JPanel {
     private void fillFields() {
         txtSerial.setText(onu.getSerial());
         txtPass.setText(onu.getPass());
-        txtAlias.setText(onu.getAlias());
+        if(onu.getAlias()!=null){
+            txtAlias.setText(onu.getAlias());
+            panel.setTitleAt(panel.indexOfComponent(this), "teste");
+        }
+        
         txtMgmtIP.setText(onu.getMgmtIp());
         cbFlowProfile.addItem("--");
         for (String fp : olt.getFlowProfiles()) {
