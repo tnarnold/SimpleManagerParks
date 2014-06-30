@@ -410,7 +410,7 @@ public class OnuPanel extends javax.swing.JPanel {
         txtMgmtIP.setText(onu.getMgmtIp());
         for (String fp : olt.getFlowProfiles()) {
             cbFlowProfile.addItem(fp);
-            if (onu.getFlowProfile().equals(fp)) {
+            if (onu.getFlowProfile()!=null && onu.getFlowProfile().equals(fp)) {
                 cbFlowProfile.setSelectedItem(fp);
             }
         }
@@ -422,15 +422,17 @@ public class OnuPanel extends javax.swing.JPanel {
             cbVtpPbmp.addItem("P1: "+vt+";P2: "+vt+";");
         }
         String brp = "";
-        for (String vtp : onu.getVlanTranslate()) {
-            if (vtp.contains("VEIP")) {
-                cbVtpVeip.setSelectedItem(vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")")));
-            }
-            if (vtp.contains("IPHOST")) {
-                cbVtpIpHost.setSelectedItem(vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")")));
-            }
-            if (!vtp.contains("IPHOST") && !vtp.contains("VEIP")) {
-                brp = brp.concat("P"+vtp+";");
+        if (onu.getVlanTranslate()!=null) {
+            for (String vtp : onu.getVlanTranslate()) {
+                if (vtp.matches(".*VEIP.*")) {
+                    cbVtpVeip.setSelectedItem(vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")")));
+                }
+                if (vtp.matches(".*IPHOST.*")) {
+                    cbVtpIpHost.setSelectedItem(vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")")));
+                }
+                if (!vtp.matches(".*IPHOST.*") && !vtp.matches(".*VEIP.*")) {
+                    brp = brp.concat("P" + vtp + ";");
+                }
             }
         }
         if (brp.matches(".*P1.*") && brp.matches(".*P2.*")) {
