@@ -32,10 +32,9 @@ public class OnuPanel extends javax.swing.JPanel {
         initComponents();
         this.onu = onu;
         this.olt = olt;
+        txtPass.setText("parks");
         fillFields();
-       
-        
-        
+
     }
 
     /**
@@ -91,9 +90,14 @@ public class OnuPanel extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(669, 483));
 
+        txtPass.setText("parks");
+
         lbSerial.setText("Serial:");
 
         txtSerial.setEditable(false);
+        txtSerial.setBackground(new java.awt.Color(176, 176, 176));
+        txtSerial.setForeground(new java.awt.Color(109, 109, 109));
+        txtSerial.setSelectedTextColor(new java.awt.Color(195, 195, 195));
 
         lbPass.setText("Pass:");
 
@@ -103,13 +107,19 @@ public class OnuPanel extends javax.swing.JPanel {
 
         lbMgmtIP.setText("Mgmt IP:");
 
+        cbFlowProfile.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--" }));
+
         lbFlowProfile.setText("Flow Profile:");
 
         lbVtpIpHost.setText("VTP IPHOST:");
 
+        cbVtpIpHost.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--" }));
+
+        cbVtpVeip.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--" }));
+
         lbVtpVeip.setText("VTP VEIP:");
 
-        cbVtpPbmp.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--", "Ether Ports Bridge 1,2", "Ether Port Bridge 1", "Ether Port Bridge 2" }));
+        cbVtpPbmp.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--" }));
 
         lbVtpPbmp.setText("VTP PBMP:");
 
@@ -396,22 +406,44 @@ public class OnuPanel extends javax.swing.JPanel {
     private void fillFields() {
         txtSerial.setText(onu.getSerial());
         txtPass.setText(onu.getPass());
-        if(onu.getAlias()!=null){
-            txtAlias.setText(onu.getAlias());
-            panel.setTitleAt(panel.indexOfComponent(this), "teste");
-        }
-        
+        txtAlias.setText(onu.getAlias());
         txtMgmtIP.setText(onu.getMgmtIp());
-        cbFlowProfile.addItem("--");
         for (String fp : olt.getFlowProfiles()) {
             cbFlowProfile.addItem(fp);
-            if(onu.getFlowProfile().equals(fp)){
+            if (onu.getFlowProfile().equals(fp)) {
                 cbFlowProfile.setSelectedItem(fp);
-            }else{
-                cbFlowProfile.setSelectedItem("--");
             }
-            
         }
+        for (String vt : olt.getVlanTranslate()) {
+            cbVtpIpHost.addItem(vt);
+            cbVtpVeip.addItem(vt);
+            cbVtpPbmp.addItem("P1: "+vt+";");
+            cbVtpPbmp.addItem("P2: "+vt+";");
+            cbVtpPbmp.addItem("P1: "+vt+";P2: "+vt+";");
+        }
+        String brp = "";
+        for (String vtp : onu.getVlanTranslate()) {
+            if (vtp.contains("VEIP")) {
+                cbVtpVeip.setSelectedItem(vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")")));
+            }
+            if (vtp.contains("IPHOST")) {
+                cbVtpIpHost.setSelectedItem(vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")")));
+            }
+            if (!vtp.contains("IPHOST") && !vtp.contains("VEIP")) {
+                brp = brp.concat("P"+vtp+";");
+            }
+        }
+        if (brp.matches(".*P1.*") && brp.matches(".*P2.*")) {
+            
+            cbVtpPbmp.setSelectedItem(brp);
+        } else if (brp.matches(".*P1.*") && !brp.matches(".*P2.*")) {
+           
+            cbVtpPbmp.setSelectedItem(brp);
+        } else if (!brp.matches(".*P1.*") && brp.matches(".*P2.*")) {
+           
+            cbVtpPbmp.setSelectedItem(brp);
+        }
+
     }
 
     public ONU getOnu() {

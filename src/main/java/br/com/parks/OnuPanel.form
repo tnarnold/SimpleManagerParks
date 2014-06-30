@@ -77,6 +77,9 @@
   </Layout>
   <SubComponents>
     <Component class="javax.swing.JPasswordField" name="txtPass">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="parks"/>
+      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lbSerial">
       <Properties>
@@ -86,6 +89,15 @@
     <Component class="javax.swing.JTextField" name="txtSerial">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="b0" green="b0" red="b0" type="rgb"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="6d" green="6d" red="6d" type="rgb"/>
+        </Property>
+        <Property name="selectedTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="c3" green="c3" red="c3" type="rgb"/>
+        </Property>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lbPass">
@@ -198,7 +210,9 @@
         <Component class="javax.swing.JComboBox" name="cbFlowProfile">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
+              <StringArray count="1">
+                <StringItem index="0" value="--"/>
+              </StringArray>
             </Property>
           </Properties>
         </Component>
@@ -215,14 +229,18 @@
         <Component class="javax.swing.JComboBox" name="cbVtpIpHost">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
+              <StringArray count="1">
+                <StringItem index="0" value="--"/>
+              </StringArray>
             </Property>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbVtpVeip">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
+              <StringArray count="1">
+                <StringItem index="0" value="--"/>
+              </StringArray>
             </Property>
           </Properties>
         </Component>
@@ -234,11 +252,8 @@
         <Component class="javax.swing.JComboBox" name="cbVtpPbmp">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
+              <StringArray count="1">
                 <StringItem index="0" value="--"/>
-                <StringItem index="1" value="Ether Ports Bridge 1,2"/>
-                <StringItem index="2" value="Ether Port Bridge 1"/>
-                <StringItem index="3" value="Ether Port Bridge 2"/>
               </StringArray>
             </Property>
           </Properties>

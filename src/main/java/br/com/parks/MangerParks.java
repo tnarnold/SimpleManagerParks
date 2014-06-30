@@ -122,11 +122,11 @@ public class MangerParks extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ifPon", "IDX", "Serial", "IP Mgmt"
+                "ifPon", "IDX", "Serial", "Alias", "IP Mgmt"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -144,6 +144,8 @@ public class MangerParks extends javax.swing.JFrame {
             tbOnus.getColumnModel().getColumn(0).setMaxWidth(70);
             tbOnus.getColumnModel().getColumn(1).setMinWidth(40);
             tbOnus.getColumnModel().getColumn(1).setMaxWidth(40);
+            tbOnus.getColumnModel().getColumn(2).setMinWidth(100);
+            tbOnus.getColumnModel().getColumn(2).setMaxWidth(100);
         }
 
         btCleanTable.setText("Clear");
@@ -345,10 +347,20 @@ public class MangerParks extends javax.swing.JFrame {
         if (evt.getClickCount() == 2 && cOnus != null) {
             int row = tbOnus.getSelectedRow();
             ONU onu = colt.getOnu(tbOnus.getModel().getValueAt(row, 2).toString(), cOnus);
-            OnuPanel op = new OnuPanel(tabbedPanel, onu, selectedOlt);
-            if (tabbedPanel.indexOfTab(onu.getAlias()) == -1 || tabbedPanel.indexOfTab(onu.getSerial()) == -1) {
+            if (tabbedPanel.indexOfTab(onu.getAlias()) == -1 && tabbedPanel.indexOfTab(onu.getSerial()) == -1) {
+                OnuPanel op = new OnuPanel(tabbedPanel, onu, selectedOlt);
                 tabbedPanel.add(onu.getSerial(), op);
                 tabbedPanel.setSelectedComponent(op);
+                int idxt = tabbedPanel.getTabCount();
+                if (onu.getAlias() != null) {
+                    tabbedPanel.setTitleAt(idxt - 1, onu.getAlias());
+                }
+            } else {
+                if(tabbedPanel.indexOfTab(onu.getAlias())!=-1){
+                    tabbedPanel.setSelectedIndex(tabbedPanel.indexOfTab(onu.getAlias()));
+                }else{
+                    tabbedPanel.setSelectedIndex(tabbedPanel.indexOfTab(onu.getSerial()));
+                }
             }
 
         }
@@ -421,7 +433,7 @@ public class MangerParks extends javax.swing.JFrame {
     private void displayResultOnuTable(List<ONU> result) {
         DefaultTableModel dtm = (DefaultTableModel) tbOnus.getModel();
         for (ONU o : result) {
-            dtm.addRow(new String[]{o.getIfGpon(), Integer.toString(o.getIndex()), o.getSerial(), o.getMgmtIp()});
+            dtm.addRow(new String[]{o.getIfGpon(), Integer.toString(o.getIndex()), o.getSerial(),o.getAlias(), o.getMgmtIp()});
         }
         tbOnus.setModel(dtm);
     }
