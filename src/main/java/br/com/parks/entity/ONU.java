@@ -19,12 +19,14 @@ public class ONU {
     private String ifGpon;
     private String mgmtIp;
     private String mgmtMacAddr;
+    private String defGw;
     private String lanIp;
     private String lanMacAddr;
     private String user;
     private String pass;
     private String iface;
     private String flowProfile;
+    private boolean isBridge=false;
     private List<String> vlanTranslate;
     private OLT olt;
 
@@ -149,6 +151,25 @@ public class ONU {
     public void setOlt(OLT olt) {
         this.olt = olt;
     }
+
+    public String getDefGw() {
+        return defGw;
+    }
+
+    public void setDefGw(String defGw) {
+        this.defGw = defGw;
+    }
+
+    public boolean isBridge() {
+        return isBridge;
+    }
+
+    public void setBridge(boolean bridge) {
+        this.isBridge = bridge;
+    }
+    
+    
+    
     
     @Override
     public int hashCode() {

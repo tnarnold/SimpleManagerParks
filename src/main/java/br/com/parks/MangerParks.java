@@ -64,9 +64,10 @@ public class MangerParks extends javax.swing.JFrame {
         btCleanTable = new javax.swing.JButton();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
-        openMenuItem = new javax.swing.JMenuItem();
-        saveMenuItem = new javax.swing.JMenuItem();
-        saveAsMenuItem = new javax.swing.JMenuItem();
+        bwProfileItem = new javax.swing.JMenuItem();
+        flowProfileItem = new javax.swing.JMenuItem();
+        multicastProfileItem = new javax.swing.JMenuItem();
+        multicastProfile = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         cutMenuItem = new javax.swing.JMenuItem();
@@ -225,18 +226,20 @@ public class MangerParks extends javax.swing.JFrame {
         fileMenu.setMnemonic('f');
         fileMenu.setText("File");
 
-        openMenuItem.setMnemonic('o');
-        openMenuItem.setText("Open");
-        fileMenu.add(openMenuItem);
+        bwProfileItem.setMnemonic('o');
+        bwProfileItem.setText("BWProfile");
+        fileMenu.add(bwProfileItem);
 
-        saveMenuItem.setMnemonic('s');
-        saveMenuItem.setText("Save");
-        fileMenu.add(saveMenuItem);
+        flowProfileItem.setMnemonic('s');
+        flowProfileItem.setText("FlowProfile");
+        fileMenu.add(flowProfileItem);
 
-        saveAsMenuItem.setMnemonic('a');
-        saveAsMenuItem.setText("Save As ...");
-        saveAsMenuItem.setDisplayedMnemonicIndex(5);
-        fileMenu.add(saveAsMenuItem);
+        multicastProfileItem.setMnemonic('a');
+        multicastProfileItem.setText("MCGroups");
+        fileMenu.add(multicastProfileItem);
+
+        multicastProfile.setText("MCOperation");
+        fileMenu.add(multicastProfile);
 
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
@@ -332,6 +335,9 @@ public class MangerParks extends javax.swing.JFrame {
     }//GEN-LAST:event_btFindOnusActionPerformed
 
     private void btCleanTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCleanTableActionPerformed
+        while(tabbedPanel.getTabCount()>1){
+            tabbedPanel.remove(1);
+        }
         cleanDisplayedResults();
     }//GEN-LAST:event_btCleanTableActionPerformed
 
@@ -400,6 +406,7 @@ public class MangerParks extends javax.swing.JFrame {
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JButton btCleanTable;
     private javax.swing.JButton btFindOnus;
+    private javax.swing.JMenuItem bwProfileItem;
     private javax.swing.JMenuItem contentsMenuItem;
     private javax.swing.JMenuItem copyMenuItem;
     private javax.swing.JMenuItem cutMenuItem;
@@ -407,6 +414,7 @@ public class MangerParks extends javax.swing.JFrame {
     private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem flowProfileItem;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
@@ -416,10 +424,9 @@ public class MangerParks extends javax.swing.JFrame {
     private javax.swing.JLabel lbSerialONU;
     private javax.swing.JLabel lbUserOlt;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JMenuItem multicastProfile;
+    private javax.swing.JMenuItem multicastProfileItem;
     private javax.swing.JMenuItem pasteMenuItem;
-    private javax.swing.JMenuItem saveAsMenuItem;
-    private javax.swing.JMenuItem saveMenuItem;
     private javax.swing.JPanel tabOlt;
     private javax.swing.JTabbedPane tabbedPanel;
     private javax.swing.JTable tbOnus;

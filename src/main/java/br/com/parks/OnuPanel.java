@@ -64,6 +64,7 @@ public class OnuPanel extends javax.swing.JPanel {
         cbVtpPbmp = new javax.swing.JComboBox();
         lbVtpPbmp = new javax.swing.JLabel();
         btProvisioning = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
         btReload = new javax.swing.JButton();
         pnOnuConf = new javax.swing.JPanel();
         txtLanIp = new javax.swing.JTextField();
@@ -108,22 +109,28 @@ public class OnuPanel extends javax.swing.JPanel {
         lbMgmtIP.setText("Mgmt IP:");
 
         cbFlowProfile.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--" }));
+        cbFlowProfile.setEnabled(false);
 
         lbFlowProfile.setText("Flow Profile:");
 
         lbVtpIpHost.setText("VTP IPHOST:");
 
         cbVtpIpHost.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--" }));
+        cbVtpIpHost.setEnabled(false);
 
         cbVtpVeip.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--" }));
+        cbVtpVeip.setEnabled(false);
 
         lbVtpVeip.setText("VTP VEIP:");
 
         cbVtpPbmp.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--" }));
+        cbVtpPbmp.setEnabled(false);
 
         lbVtpPbmp.setText("VTP PBMP:");
 
         btProvisioning.setText("Provisioning");
+
+        jCheckBox1.setText("Bridge");
 
         javax.swing.GroupLayout pnOnuProvLayout = new javax.swing.GroupLayout(pnOnuProv);
         pnOnuProv.setLayout(pnOnuProvLayout);
@@ -134,20 +141,25 @@ public class OnuPanel extends javax.swing.JPanel {
                     .addGroup(pnOnuProvLayout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbVtpPbmp)
                             .addGroup(pnOnuProvLayout.createSequentialGroup()
                                 .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lbMgmtIP)
                                     .addComponent(lbAlias))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtMgmtIP, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtAlias, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lbFlowProfile)
-                                    .addComponent(lbVtpIpHost)))
-                            .addComponent(lbVtpVeip)
-                            .addComponent(lbVtpPbmp))
+                                .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(pnOnuProvLayout.createSequentialGroup()
+                                        .addComponent(jCheckBox1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbVtpVeip))
+                                    .addGroup(pnOnuProvLayout.createSequentialGroup()
+                                        .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(txtMgmtIP, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtAlias, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(lbFlowProfile)
+                                            .addComponent(lbVtpIpHost))))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbVtpPbmp, 0, 228, Short.MAX_VALUE)
@@ -177,7 +189,8 @@ public class OnuPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbVtpVeip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbVtpVeip))
+                    .addComponent(lbVtpVeip)
+                    .addComponent(jCheckBox1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbVtpPbmp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -193,7 +206,11 @@ public class OnuPanel extends javax.swing.JPanel {
 
         lbLanIp.setText("LAN IP:");
 
+        txtDhcpRangeFirst.setEnabled(false);
+
         lbDhcpRangeFirst.setText("DHCP Range:");
+
+        txtDhcpRangeLast.setEnabled(false);
 
         lbDhcpRangeLast.setText("Last IP Range:");
 
@@ -212,6 +229,10 @@ public class OnuPanel extends javax.swing.JPanel {
         jLabel15.setText("User:");
 
         jLabel16.setText("Pass:");
+
+        jTextField9.setEnabled(false);
+
+        jPasswordField2.setEnabled(false);
 
         javax.swing.GroupLayout pnOnuConfLayout = new javax.swing.GroupLayout(pnOnuConf);
         pnOnuConf.setLayout(pnOnuConfLayout);
@@ -372,6 +393,7 @@ public class OnuPanel extends javax.swing.JPanel {
     private javax.swing.JCheckBox ckbNat;
     private javax.swing.JLabel ckbPPPoE;
     private javax.swing.JButton jButton4;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox3;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;

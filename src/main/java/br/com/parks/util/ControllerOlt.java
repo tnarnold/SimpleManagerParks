@@ -95,6 +95,7 @@ public class ControllerOlt {
 
     /**
      * Get an ONU list by serial number of equipment
+     *
      * @param serial
      * @return List of ONUs
      */
@@ -126,8 +127,8 @@ public class ControllerOlt {
     }
 
     public List<ONU> getOnus() {
-        if(olt==null){
-            olt=getOlt();
+        if (olt == null) {
+            olt = getOlt();
         }
         e.send("show gpon onu\n\n\n\n                                                 ");
         e.expect("#");
@@ -137,7 +138,6 @@ public class ControllerOlt {
         for (int i = 0; i < ifPon.length; i++) {
             if (ifPon[i].length() > 10) {
                 String[] onu = ifPon[i].replaceAll("\t( )( )( )( )", "#").split("\n( )( )( )( )");
-
                 for (int j = 0; j < onu.length; j++) {
                     if (!onu[j].trim().startsWith("gpon")) {
                         ONU onuTemp = new ONU();
@@ -178,7 +178,7 @@ public class ControllerOlt {
                 }
             }
         }
-        
+
         return onus;
     }
 
@@ -221,7 +221,7 @@ public class ControllerOlt {
         return vps;
     }
 
-    public void connect() {
+    public boolean connect() {
         if (!user.isEmpty() && !pass.isEmpty()) {
             try {
                 s = this.jsch.getSession(this.user, this.ipAccess);
@@ -234,7 +234,7 @@ public class ControllerOlt {
                     is.mark(40000);
                     e = new Expect(is, c.getOutputStream());
                     e.setDefault_timeout(10);
-                    
+
                     c.connect();
                     e.send("\n");
                     e.expect("Username:");
@@ -242,21 +242,58 @@ public class ControllerOlt {
                     e.expect("Password:");
                     e.send(pass + "\n");
                     e.expectOrThrow("#");
-                    
-                }else{
+
+                } else {
                     System.out.println("Ipossible connect to host");
                 }
 
             } catch (JSchException ex) {
                 Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
             } catch (IOException ex) {
                 Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
             } catch (Expect.TimeoutException ex) {
                 Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
             } catch (Expect.EOFException ex) {
                 Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
             }
         }
+        return true;
+    }
+
+    public boolean provisioningOnu(ONU onu) {
+        String iphost = "";
+        String veip = "";
+        String pbmp1 = "";
+        String pbmp2 = "";
+        for (String vtp : onu.getVlanTranslate()) {
+            if (vtp.matches(".*VEIP.*")) {
+                veip = vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")"));
+            } else if (vtp.matches(".*IPHOST.*")) {
+                iphost = vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")"));
+            } else if (!vtp.matches(".*VEIP.*") && vtp.matches(".*IPHOST.*")) {
+                pbmp1 =vtp.startsWith("1:")?vtp.substring(vtp.indexOf("1: ")):"";
+                pbmp2 =vtp.startsWith("2:")?vtp.substring(vtp.indexOf("2: ")):"";
+            }
+        }
+        String command = "interface " + onu.getIfGpon() + "\n"
+                + "onu " + onu.getSerial() + " alias " + onu.getAlias() + "\n"
+                + "onu " + onu.getSerial() + " ip address " + onu.getMgmtIp() + " gw " + onu.getDefGw() + "\n"
+                + "onu " + onu.getSerial() + " flow-profile " + onu.getFlowProfile() + "\n"
+                + "onu " + onu.getSerial() + " vlan-translation-profile " + onu.getVlanTranslate() + " iphost\n"
+                + "onu " + onu.getSerial() + " vlan-translation-profile " + "" + " veip\n"
+                + "!\n"
+                + "end\n"
+                + "copy running-config startup-config\n";
+
+        e.send("conf t\n");
+        e.expect("(config)#");
+        e.send(command);
+        e.expect("(config)#");
+        return false;
     }
 
     public void disconnect() {

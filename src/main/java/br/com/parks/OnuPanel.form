@@ -122,24 +122,32 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Group type="102" attributes="0">
+                              <Component id="lbVtpPbmp" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Component id="lbMgmtIP" min="-2" max="-2" attributes="0"/>
                                       <Component id="lbAlias" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="txtMgmtIP" min="-2" pref="192" max="-2" attributes="0"/>
-                                      <Component id="txtAlias" min="-2" pref="192" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="lbFlowProfile" min="-2" max="-2" attributes="0"/>
-                                      <Component id="lbVtpIpHost" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="32767" attributes="0"/>
+                                          <Component id="lbVtpVeip" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Component id="txtMgmtIP" min="-2" pref="192" max="-2" attributes="0"/>
+                                              <Component id="txtAlias" min="-2" pref="192" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Component id="lbFlowProfile" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lbVtpIpHost" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                      </Group>
                                   </Group>
                               </Group>
-                              <Component id="lbVtpVeip" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbVtpPbmp" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -179,6 +187,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cbVtpVeip" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbVtpVeip" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jCheckBox1" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -214,6 +223,7 @@
                 <StringItem index="0" value="--"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbFlowProfile">
@@ -233,6 +243,7 @@
                 <StringItem index="0" value="--"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbVtpVeip">
@@ -242,6 +253,7 @@
                 <StringItem index="0" value="--"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbVtpVeip">
@@ -256,6 +268,7 @@
                 <StringItem index="0" value="--"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbVtpPbmp">
@@ -266,6 +279,11 @@
         <Component class="javax.swing.JButton" name="btProvisioning">
           <Properties>
             <Property name="text" type="java.lang.String" value="Provisioning"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Bridge"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -393,6 +411,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtDhcpRangeFirst">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbDhcpRangeFirst">
           <Properties>
@@ -400,6 +421,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtDhcpRangeLast">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbDhcpRangeLast">
           <Properties>
@@ -451,8 +475,14 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField9">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="jPasswordField2">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
