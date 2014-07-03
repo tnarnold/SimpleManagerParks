@@ -10,10 +10,6 @@ package br.com.parks.entity;
  *
  * @author tiago
  */
-public class BandwidthProfile {
-    private String name;
-    private String type;
-    private String fixed;
-    private String assured;
-    private String maximum;
+public class VlanTranslationsProfile {
+    
 }

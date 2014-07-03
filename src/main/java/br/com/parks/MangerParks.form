@@ -22,13 +22,13 @@
                 <Property name="text" type="java.lang.String" value="FlowProfile"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="multicastProfileItem">
+            <MenuItem class="javax.swing.JMenuItem" name="multicastGoupItem">
               <Properties>
                 <Property name="mnemonic" type="int" value="97"/>
                 <Property name="text" type="java.lang.String" value="MCGroups"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="multicastProfile">
+            <MenuItem class="javax.swing.JMenuItem" name="multicastOperationItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="MCOperation"/>
               </Properties>

@@ -66,8 +66,8 @@ public class MangerParks extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         bwProfileItem = new javax.swing.JMenuItem();
         flowProfileItem = new javax.swing.JMenuItem();
-        multicastProfileItem = new javax.swing.JMenuItem();
-        multicastProfile = new javax.swing.JMenuItem();
+        multicastGoupItem = new javax.swing.JMenuItem();
+        multicastOperationItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         editMenu = new javax.swing.JMenu();
         cutMenuItem = new javax.swing.JMenuItem();
@@ -234,12 +234,12 @@ public class MangerParks extends javax.swing.JFrame {
         flowProfileItem.setText("FlowProfile");
         fileMenu.add(flowProfileItem);
 
-        multicastProfileItem.setMnemonic('a');
-        multicastProfileItem.setText("MCGroups");
-        fileMenu.add(multicastProfileItem);
+        multicastGoupItem.setMnemonic('a');
+        multicastGoupItem.setText("MCGroups");
+        fileMenu.add(multicastGoupItem);
 
-        multicastProfile.setText("MCOperation");
-        fileMenu.add(multicastProfile);
+        multicastOperationItem.setText("MCOperation");
+        fileMenu.add(multicastOperationItem);
 
         exitMenuItem.setMnemonic('x');
         exitMenuItem.setText("Exit");
@@ -424,8 +424,8 @@ public class MangerParks extends javax.swing.JFrame {
     private javax.swing.JLabel lbSerialONU;
     private javax.swing.JLabel lbUserOlt;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem multicastProfile;
-    private javax.swing.JMenuItem multicastProfileItem;
+    private javax.swing.JMenuItem multicastGoupItem;
+    private javax.swing.JMenuItem multicastOperationItem;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JPanel tabOlt;
     private javax.swing.JTabbedPane tabbedPanel;
