@@ -1,0 +1,7 @@
+@startuml
+class br.com.parks.entity.OLT{
+- name: String
+- onus: List<ONU>
+}
+class br.com.parks.entity.ONU
+@enduml

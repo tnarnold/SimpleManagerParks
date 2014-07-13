@@ -66,6 +66,7 @@ public class MangerParks extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         bwProfileItem = new javax.swing.JMenuItem();
         flowProfileItem = new javax.swing.JMenuItem();
+        vlanTranslateProfile = new javax.swing.JMenuItem();
         multicastGoupItem = new javax.swing.JMenuItem();
         multicastOperationItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
@@ -234,11 +235,16 @@ public class MangerParks extends javax.swing.JFrame {
         flowProfileItem.setText("FlowProfile");
         fileMenu.add(flowProfileItem);
 
+        vlanTranslateProfile.setText("VTProfile");
+        fileMenu.add(vlanTranslateProfile);
+
         multicastGoupItem.setMnemonic('a');
         multicastGoupItem.setText("MCGroups");
+        multicastGoupItem.setEnabled(false);
         fileMenu.add(multicastGoupItem);
 
         multicastOperationItem.setText("MCOperation");
+        multicastOperationItem.setEnabled(false);
         fileMenu.add(multicastOperationItem);
 
         exitMenuItem.setMnemonic('x');
@@ -435,6 +441,7 @@ public class MangerParks extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtPassOlt;
     private javax.swing.JTextField txtSerialOnu;
     private javax.swing.JTextField txtUserOlt;
+    private javax.swing.JMenuItem vlanTranslateProfile;
     // End of variables declaration//GEN-END:variables
 
     private void displayResultOnuTable(List<ONU> result) {

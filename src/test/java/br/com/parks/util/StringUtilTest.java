@@ -112,10 +112,10 @@ public class StringUtilTest {
                 + "    3-br1 (prks00b63c65):\n"
                 + "	IP address 172.31.255.201/24\n"
                 + "	Flow profile: bridge_profile\n"
-                + "	Ports VLAN translation profile:\n"
-                + "	    1: _101\n"
-                + "	    2: _101\n"
-                + "	    5: IPHOST (_100)\n"
+//                + "	Ports VLAN translation profile:\n"
+//                + "	    1: _101\n"
+//                + "	    2: _101\n"
+//                + "	    5: IPHOST (_100)\n"
                 + "Interface gpon2/4:";
         e.send("show gpon onu\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         e.expect("#");

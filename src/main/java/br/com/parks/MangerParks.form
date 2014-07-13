@@ -22,15 +22,22 @@
                 <Property name="text" type="java.lang.String" value="FlowProfile"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="vlanTranslateProfile">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="VTProfile"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="multicastGoupItem">
               <Properties>
                 <Property name="mnemonic" type="int" value="97"/>
                 <Property name="text" type="java.lang.String" value="MCGroups"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="multicastOperationItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="MCOperation"/>
+                <Property name="enabled" type="boolean" value="false"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
