@@ -29,7 +29,7 @@ public class FlowProfilePanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tbFlow = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -44,7 +44,7 @@ public class FlowProfilePanel extends javax.swing.JPanel {
         jComboBox4 = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbFlow.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -60,7 +60,7 @@ public class FlowProfilePanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tbFlow);
 
         jButton1.setText("Add");
 
@@ -179,7 +179,16 @@ public class FlowProfilePanel extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable tbFlow;
     // End of variables declaration//GEN-END:variables
+ private void displayFlowProfileTable(OLT olt) {
+        DefaultTableModel dtm = (DefaultTableModel) tbBwp.getModel();
+        for (String r : olt.getBwProfile()) {
+            String[] rbwp=r.split(",");
+            dtm.addRow(new String[]{rbwp[0], rbwp[1], rbwp[2], rbwp[3],rbwp[4] });
+        }
+        tbBwp.setModel(dtm);
+    }
+
 }

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.com.parks.entity;
 
 import java.util.List;
@@ -13,6 +12,7 @@ import java.util.List;
  * @author tiago
  */
 public class OLT {
+
     private String mgmtIP;
     private String mgmtMac;
     private String mgmtBc;
@@ -24,6 +24,7 @@ public class OLT {
     private String ipAccess;
     private List<String> flowProfiles;
     private List<String> vlanTranslate;
+    private List<String> bwProfile;
     private List<ONU> onus;
 
     public String getMgmtIP() {
@@ -97,8 +98,14 @@ public class OLT {
     public void setOnus(List<ONU> onus) {
         this.onus = onus;
     }
-    
-    
+
+    public List<String> getBwProfile() {
+        return bwProfile;
+    }
+
+    public void setBwProfile(List<String> bwProfile) {
+        this.bwProfile = bwProfile;
+    }
 
     @Override
     public int hashCode() {
@@ -121,12 +128,5 @@ public class OLT {
         }
         return true;
     }
-    
-    
-    
-    
-    
-    
-    
-    
+
 }

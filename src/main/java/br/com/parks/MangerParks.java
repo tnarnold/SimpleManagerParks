@@ -7,12 +7,9 @@ package br.com.parks;
 
 import br.com.parks.entity.OLT;
 import br.com.parks.entity.ONU;
-import br.com.parks.util.CloseIcon;
 import br.com.parks.util.ControllerOlt;
 import java.util.List;
-import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,6 +23,7 @@ public class MangerParks extends javax.swing.JFrame {
     private OLT selectedOlt;
     private ONU selectedOnu;
     private List<ONU> cOnus;
+    private boolean isConnected;
 
     /**
      * Creates new form MangerParks
@@ -146,8 +144,8 @@ public class MangerParks extends javax.swing.JFrame {
             tbOnus.getColumnModel().getColumn(0).setMaxWidth(70);
             tbOnus.getColumnModel().getColumn(1).setMinWidth(40);
             tbOnus.getColumnModel().getColumn(1).setMaxWidth(40);
-            tbOnus.getColumnModel().getColumn(2).setMinWidth(100);
-            tbOnus.getColumnModel().getColumn(2).setMaxWidth(100);
+            tbOnus.getColumnModel().getColumn(2).setMinWidth(110);
+            tbOnus.getColumnModel().getColumn(2).setMaxWidth(110);
         }
 
         btCleanTable.setText("Clear");
@@ -229,6 +227,11 @@ public class MangerParks extends javax.swing.JFrame {
 
         bwProfileItem.setMnemonic('o');
         bwProfileItem.setText("BWProfile");
+        bwProfileItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bwProfileItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(bwProfileItem);
 
         flowProfileItem.setMnemonic('s');
@@ -377,6 +380,21 @@ public class MangerParks extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_tbOnusMouseClicked
+
+    private void bwProfileItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bwProfileItemActionPerformed
+        if(selectedOlt==null){
+            colt.setUser(txtUserOlt.getText());
+            colt.setPass(txtPassOlt.getText());
+            colt.setIpAccess(txtMgmtIpOlt.getText());
+            colt.connect();
+            selectedOlt=colt.getOlt();
+            colt.disconnect();
+        }
+        BWProfilePanel bwp= new BWProfilePanel(tabbedPanel,selectedOlt);
+        tabbedPanel.add(bwp);
+        tabbedPanel.setTitleAt(tabbedPanel.indexOfComponent(bwp),"BW Profiles");
+        tabbedPanel.setSelectedComponent(bwp);
+    }//GEN-LAST:event_bwProfileItemActionPerformed
 
     /**
      * @param args the command line arguments

@@ -13,7 +13,6 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -72,6 +71,7 @@ public class ControllerOlt {
         o.setHostname(cmdr.oltGetHostname(e.before));
         o.setFlowProfiles(getFlowProfiles());
         o.setVlanTranslate(getVlanTranslationProfiles());
+        o.setBwProfile(getBandWidthProfiles());
         o.setUser(user);
         o.setPass(pass);
         o.setIpAccess(ipAccess);
@@ -126,6 +126,11 @@ public class ControllerOlt {
         return onus;
     }
 
+    /**
+     * Return a list of ONUs connected in the OLT
+     *
+     * @return List of ONUs
+     */
     public List<ONU> getOnus() {
         if (olt == null) {
             olt = getOlt();
@@ -182,11 +187,29 @@ public class ControllerOlt {
         return onus;
     }
 
-    public boolean provisionOnu(ONU onu) {
-
-        return false;
+    /**
+     * Return the list of profiles bandwidth in the OLT
+     *
+     * @return List of bandwidth profiles in the OLT
+     */
+    public List<String> getBandWidthProfiles() {
+        ArrayList<String> bwps = new ArrayList<>();
+        e.send("show gpon profile bandwidth\n");
+        e.expect("#");
+        String[] bwp = e.before.split("[\\n\\r]+");
+        if (bwp.length > 1) {
+            for (int i = 2; i < bwp.length-1; i++) {
+                bwps.add(bwp[i].replaceAll("[|]", ",").replaceAll("\\s+", ""));
+            }
+        }
+        return bwps;
     }
 
+    /**
+     * Return the flow profiles applied in the OLT
+     *
+     * @return List of flow profiles
+     */
     public List<String> getFlowProfiles() {
         ArrayList<String> fps = new ArrayList<String>();
         e.send("show gpon profile flow\n");
@@ -204,6 +227,11 @@ public class ControllerOlt {
         return fps;
     }
 
+    /**
+     * Return the profiles for translations of VLANs in the OLT
+     *
+     * @return
+     */
     public List<String> getVlanTranslationProfiles() {
         ArrayList<String> vps = new ArrayList<String>();
         e.send("show gpon profile vlan-translation\n");
@@ -221,6 +249,11 @@ public class ControllerOlt {
         return vps;
     }
 
+    /**
+     * Initialize the connection in the OLT
+     *
+     * @return
+     */
     public boolean connect() {
         if (!user.isEmpty() && !pass.isEmpty()) {
             try {
@@ -275,8 +308,8 @@ public class ControllerOlt {
             } else if (vtp.matches(".*IPHOST.*")) {
                 iphost = vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")"));
             } else if (!vtp.matches(".*VEIP.*") && vtp.matches(".*IPHOST.*")) {
-                pbmp1 =vtp.startsWith("1:")?vtp.substring(vtp.indexOf("1: ")):"";
-                pbmp2 =vtp.startsWith("2:")?vtp.substring(vtp.indexOf("2: ")):"";
+                pbmp1 = vtp.startsWith("1:") ? vtp.substring(vtp.indexOf("1: ")) : "";
+                pbmp2 = vtp.startsWith("2:") ? vtp.substring(vtp.indexOf("2: ")) : "";
             }
         }
         String command = "interface " + onu.getIfGpon() + "\n"

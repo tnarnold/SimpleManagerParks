@@ -15,6 +15,9 @@
                 <Property name="mnemonic" type="int" value="111"/>
                 <Property name="text" type="java.lang.String" value="BWProfile"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bwProfileItemActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="flowProfileItem">
               <Properties>
@@ -349,7 +352,7 @@
                           <Editor/>
                           <Renderer/>
                         </Column>
-                        <Column maxWidth="100" minWidth="100" prefWidth="-1" resizable="true">
+                        <Column maxWidth="110" minWidth="110" prefWidth="-1" resizable="true">
                           <Title/>
                           <Editor/>
                           <Renderer/>
