@@ -6,6 +6,9 @@
 
 package br.com.parks;
 
+import br.com.parks.entity.OLT;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author tiago
@@ -183,12 +186,12 @@ public class FlowProfilePanel extends javax.swing.JPanel {
     private javax.swing.JTable tbFlow;
     // End of variables declaration//GEN-END:variables
  private void displayFlowProfileTable(OLT olt) {
-        DefaultTableModel dtm = (DefaultTableModel) tbBwp.getModel();
+        DefaultTableModel dtm = (DefaultTableModel) tbFlow.getModel();
         for (String r : olt.getBwProfile()) {
             String[] rbwp=r.split(",");
             dtm.addRow(new String[]{rbwp[0], rbwp[1], rbwp[2], rbwp[3],rbwp[4] });
         }
-        tbBwp.setModel(dtm);
+        tbFlow.setModel(dtm);
     }
 
 }
