@@ -37,9 +37,12 @@ public class ControllerOltTest {
     public void testGetFlowProfiles() {
         System.out.println("Testing if get all flow profiles:");
         ArrayList<String> pfs = new ArrayList<String>();
-        pfs.add("pks_bridge_1p");
-        pfs.add("pks_bridge_2p");
-        pfs.add("pks_routers");
+        pfs.add("pks_bridge_1p,1,IPHOST,100,-,DISABLED,0,pks_mgmt_1Mb,");
+        pfs.add("pks_bridge_1p,2,PBMP,101,-,DISABLED,0,pks_data_10Mb,1");
+        pfs.add("pks_bridge_2p,1,IPHOST,100,-,DISABLED,0,pks_mgmt_1Mb,");
+        pfs.add("pks_bridge_2p,2,PBMP,101,-,DISABLED,0,pks_data_10Mb,12");
+        pfs.add("pks_routers,1,IPHOST,100,-,DISABLED,0,pks_mgmt_1Mb,");
+        pfs.add("pks_routers,2,VEIP,101,-,DISABLED,0,pks_data_10Mb,");
         assertEquals(pfs.get(0), c.getFlowProfiles().get(0));
         assertEquals(pfs.get(1), c.getFlowProfiles().get(1));
         assertEquals(pfs.get(2), c.getFlowProfiles().get(2));
@@ -49,8 +52,8 @@ public class ControllerOltTest {
     public void testGetVlanTranlationProfiles() {
         System.out.println("Testing if get all Vlan Translation Profiles:");
         ArrayList<String> vpts = new ArrayList<String>();
-        vpts.add("_100");
-        vpts.add("_101");
+        vpts.add("_100,2,UNTAGGED,-,100,-,-,4,F->X-F");
+        vpts.add("_101,2,UNTAGGED,-,101,-,-,4,F->X-F");
         assertEquals(vpts.get(0), c.getVlanTranslationProfiles().get(0));
         assertEquals(vpts.get(1), c.getVlanTranslationProfiles().get(1));
     }

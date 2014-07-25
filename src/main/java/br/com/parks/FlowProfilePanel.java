@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.com.parks;
 
 import br.com.parks.entity.OLT;
+import br.com.parks.entity.ONU;
+import java.util.List;
+import javax.swing.JTabbedPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -15,12 +17,27 @@ import javax.swing.table.DefaultTableModel;
  */
 public class FlowProfilePanel extends javax.swing.JPanel {
 
+    private final JTabbedPane panel;
+    private OLT olt;
+    private ONU onu;
     /**
      * Creates new form FlowProfilePanel
+     * @param panel
      */
-    public FlowProfilePanel() {
+    public FlowProfilePanel(JTabbedPane panel) {
+        this.panel = panel;
         initComponents();
+        
     }
+
+    public FlowProfilePanel(JTabbedPane panel, OLT olt) {
+        this.panel = panel;
+        this.olt = olt;
+        initComponents();
+        displayFlowItemProfileTable(olt.getFlowProfiles());
+        displayFlowProfileTable(olt);
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -32,11 +49,11 @@ public class FlowProfilePanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jScrollPane2 = new javax.swing.JScrollPane();
-        tbFlow = new javax.swing.JTable();
+        tbFlowItem = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbFlowName = new javax.swing.JTable();
         jComboBox2 = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox();
@@ -47,7 +64,7 @@ public class FlowProfilePanel extends javax.swing.JPanel {
         jComboBox4 = new javax.swing.JComboBox();
         jLabel4 = new javax.swing.JLabel();
 
-        tbFlow.setModel(new javax.swing.table.DefaultTableModel(
+        tbFlowItem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -63,11 +80,11 @@ public class FlowProfilePanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(tbFlow);
+        jScrollPane2.setViewportView(tbFlowItem);
 
         jButton1.setText("Add");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbFlowName.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -83,7 +100,11 @@ public class FlowProfilePanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbFlowName);
+        if (tbFlowName.getColumnModel().getColumnCount() > 0) {
+            tbFlowName.getColumnModel().getColumn(0).setMinWidth(40);
+            tbFlowName.getColumnModel().getColumn(0).setMaxWidth(40);
+        }
 
         jLabel2.setText("Vlan:");
 
@@ -181,17 +202,29 @@ public class FlowProfilePanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTable tbFlow;
+    private javax.swing.JTable tbFlowItem;
+    private javax.swing.JTable tbFlowName;
     // End of variables declaration//GEN-END:variables
- private void displayFlowProfileTable(OLT olt) {
-        DefaultTableModel dtm = (DefaultTableModel) tbFlow.getModel();
-        for (String r : olt.getBwProfile()) {
-            String[] rbwp=r.split(",");
-            dtm.addRow(new String[]{rbwp[0], rbwp[1], rbwp[2], rbwp[3],rbwp[4] });
+    
+    private void displayFlowItemProfileTable(List<String> flow) {
+        DefaultTableModel dtm = (DefaultTableModel) tbFlowItem.getModel();
+        for (String r : flow) {
+            String[] rbwp = r.split(",");
+            dtm.addRow(new String[]{rbwp[1], rbwp[2], rbwp[3], rbwp[4]});
         }
-        tbFlow.setModel(dtm);
+        tbFlowItem.setModel(dtm);
     }
 
+    private void displayFlowProfileTable(OLT olt) {
+        DefaultTableModel dtm = (DefaultTableModel) tbFlowName.getModel();
+        int count=0;
+        for (String r : olt.getBwProfile()) {
+            count++;
+            String[] rbwp = r.split(",");
+            dtm.addRow(new String[]{Integer.toString(count), rbwp[0]});
+        }
+        tbFlowName.setModel(dtm);
+        count=0;
+    }
 }

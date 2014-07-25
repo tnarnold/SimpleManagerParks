@@ -5,6 +5,7 @@
  */
 package br.com.parks;
 
+import br.com.parks.entity.FlowProfile;
 import br.com.parks.entity.OLT;
 import br.com.parks.entity.ONU;
 import br.com.parks.util.ControllerOlt;
@@ -236,6 +237,11 @@ public class MangerParks extends javax.swing.JFrame {
 
         flowProfileItem.setMnemonic('s');
         flowProfileItem.setText("FlowProfile");
+        flowProfileItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                flowProfileItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(flowProfileItem);
 
         vlanTranslateProfile.setText("VTProfile");
@@ -395,6 +401,21 @@ public class MangerParks extends javax.swing.JFrame {
         tabbedPanel.setTitleAt(tabbedPanel.indexOfComponent(bwp),"BW Profiles");
         tabbedPanel.setSelectedComponent(bwp);
     }//GEN-LAST:event_bwProfileItemActionPerformed
+
+    private void flowProfileItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_flowProfileItemActionPerformed
+        if(selectedOlt==null){
+            colt.setUser(txtUserOlt.getText());
+            colt.setPass(txtPassOlt.getText());
+            colt.setIpAccess(txtMgmtIpOlt.getText());
+            colt.connect();
+            selectedOlt=colt.getOlt();
+            colt.disconnect();
+        }
+        FlowProfilePanel fpp= new FlowProfilePanel(tabbedPanel,selectedOlt);
+        tabbedPanel.add(fpp);
+        tabbedPanel.setTitleAt(tabbedPanel.indexOfComponent(fpp),"Flow Profiles");
+        tabbedPanel.setSelectedComponent(fpp);
+    }//GEN-LAST:event_flowProfileItemActionPerformed
 
     /**
      * @param args the command line arguments

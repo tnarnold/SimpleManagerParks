@@ -437,11 +437,12 @@ public class OnuPanel extends javax.swing.JPanel {
             }
         }
         for (String vt : olt.getVlanTranslate()) {
-            cbVtpIpHost.addItem(vt);
-            cbVtpVeip.addItem(vt);
-            cbVtpPbmp.addItem("P1: "+vt+";");
-            cbVtpPbmp.addItem("P2: "+vt+";");
-            cbVtpPbmp.addItem("P1: "+vt+";P2: "+vt+";");
+            String[] vtl=vt.split(",");
+            cbVtpIpHost.addItem(vtl[0]);
+            cbVtpVeip.addItem(vtl[0]);
+            cbVtpPbmp.addItem("P1: "+vtl[0]+";");
+            cbVtpPbmp.addItem("P2: "+vtl[0]+";");
+            cbVtpPbmp.addItem("P1: "+vtl[0]+";P2: "+vtl[0]+";");
         }
         String brp = "";
         if (onu.getVlanTranslate()!=null) {

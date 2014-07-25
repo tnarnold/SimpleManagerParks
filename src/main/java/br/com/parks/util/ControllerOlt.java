@@ -198,7 +198,7 @@ public class ControllerOlt {
         e.expect("#");
         String[] bwp = e.before.split("[\\n\\r]+");
         if (bwp.length > 1) {
-            for (int i = 2; i < bwp.length-1; i++) {
+            for (int i = 2; i < bwp.length - 1; i++) {
                 bwps.add(bwp[i].replaceAll("[|]", ",").replaceAll("\\s+", ""));
             }
         }
@@ -215,10 +215,30 @@ public class ControllerOlt {
         e.send("show gpon profile flow\n");
         e.expect("#");
         String[] lfp = e.before.split("[\\n\\r]+");
+        int count = 0;
+        String fpLine = "";
+        String fpName = "";
         if (lfp.length > 1) {
             for (int i = 0; i < lfp.length; i++) {
-                if (lfp[i].contains("Index")) {
-                    fps.add(lfp[i - 1].trim());
+                if (!lfp[i].contains("|")) {
+                    count = 0;
+                    fpName = lfp[i].trim();
+                }
+                if (lfp[i].contains("|") && !lfp[i].contains("Index")) {
+                    count++;
+                    String[] fpls = lfp[i].split("\\|");
+                    fpLine = fpName.concat("," + fpls[0].trim()
+                            + "," + fpls[1].trim()
+                            + "," + fpls[2].trim()
+                            + "," + fpls[3].trim()
+                            + "," + fpls[4].trim()
+                            + "," + fpls[5].trim()
+                            + "," + fpls[6].trim()
+                            + "," + fpls[7].trim().replaceAll("\\s+", ""));
+                }
+                if (fpLine.matches(".+,.*,.*,.*,.*,.*,.*,.*,.*")) {
+                    fps.add(fpLine);
+                    fpLine = "";
                 }
             }
         } else {
@@ -236,11 +256,31 @@ public class ControllerOlt {
         ArrayList<String> vps = new ArrayList<String>();
         e.send("show gpon profile vlan-translation\n");
         e.expect("#");
-        String[] lfp = e.before.split("[\\n\\r]+");
-        if (lfp.length > 1) {
-            for (int i = 0; i < lfp.length; i++) {
-                if (lfp[i].contains("Index")) {
-                    vps.add(lfp[i - 1].replace(":", "").trim());
+        String[] lvtp = e.before.split("[\\n\\r]+");
+        int count = 0;
+        String vtpLine = "";
+        String vtpName = "";
+        if (lvtp.length > 1) {
+            for (int i = 0; i < lvtp.length; i++) {
+                if (!lvtp[i].contains("|")) {
+                    count = 0;
+                    vtpName = lvtp[i].trim().replaceAll(":", "");
+                }
+                if (lvtp[i].contains("|") && !lvtp[i].contains("Index")) {
+                    count++;
+                    String[] vtpls = lvtp[i].split("\\|");
+                    vtpLine = vtpName.concat("," + vtpls[0].trim()
+                            + "," + vtpls[1].trim()
+                            + "," + vtpls[2].trim()
+                            + "," + vtpls[3].trim()
+                            + "," + vtpls[4].trim()
+                            + "," + vtpls[5].trim()
+                            + "," + vtpls[6].trim()
+                            + "," + vtpls[7].trim().replaceAll("\\s+", ""));
+                }
+                if (vtpLine.matches(".+,.*,.*,.*,.*,.*,.*,.*,.*")) {
+                    vps.add(vtpLine);
+                    vtpLine = "";
                 }
             }
         } else {
@@ -251,8 +291,7 @@ public class ControllerOlt {
 
     /**
      * Initialize the connection in the OLT
-     *
-     * @return
+     * @return true if is connected
      */
     public boolean connect() {
         if (!user.isEmpty() && !pass.isEmpty()) {
