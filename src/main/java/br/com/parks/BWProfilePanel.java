@@ -41,7 +41,7 @@ public class BWProfilePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
+        spBwpTable = new javax.swing.JScrollPane();
         tbBwp = new javax.swing.JTable();
         txtBwName = new javax.swing.JTextField();
         lbBwName = new javax.swing.JLabel();
@@ -51,6 +51,7 @@ public class BWProfilePanel extends javax.swing.JPanel {
         lbBwpMaximum = new javax.swing.JLabel();
         txtBwpMaximum = new javax.swing.JTextField();
         btClose1 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         tbBwp.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -68,7 +69,7 @@ public class BWProfilePanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tbBwp);
+        spBwpTable.setViewportView(tbBwp);
         if (tbBwp.getColumnModel().getColumnCount() > 0) {
             tbBwp.getColumnModel().getColumn(0).setHeaderValue("Name");
             tbBwp.getColumnModel().getColumn(1).setHeaderValue("Type");
@@ -79,6 +80,7 @@ public class BWProfilePanel extends javax.swing.JPanel {
 
         lbBwName.setText("Name:");
 
+        btAddBwp.setForeground(new java.awt.Color(8, 128, 0));
         btAddBwp.setText("Add BW Profile");
 
         lbBwpAssured.setText("Assured:");
@@ -92,6 +94,9 @@ public class BWProfilePanel extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setForeground(new java.awt.Color(254, 1, 1));
+        jButton1.setText("Remove BW Profile");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -99,7 +104,7 @@ public class BWProfilePanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
+                    .addComponent(spBwpTable, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -118,6 +123,8 @@ public class BWProfilePanel extends javax.swing.JPanel {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btAddBwp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btClose1)))
                 .addContainerGap())
@@ -126,7 +133,8 @@ public class BWProfilePanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(spBwpTable, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -141,7 +149,9 @@ public class BWProfilePanel extends javax.swing.JPanel {
                             .addComponent(txtBwpMaximum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbBwpMaximum))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
-                        .addComponent(btAddBwp))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btAddBwp)
+                            .addComponent(jButton1)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btClose1)))
@@ -157,10 +167,11 @@ public class BWProfilePanel extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAddBwp;
     private javax.swing.JButton btClose1;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lbBwName;
     private javax.swing.JLabel lbBwpAssured;
     private javax.swing.JLabel lbBwpMaximum;
+    private javax.swing.JScrollPane spBwpTable;
     private javax.swing.JTable tbBwp;
     private javax.swing.JTextField txtBwName;
     private javax.swing.JTextField txtBwpAssured;

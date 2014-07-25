@@ -245,6 +245,11 @@ public class MangerParks extends javax.swing.JFrame {
         fileMenu.add(flowProfileItem);
 
         vlanTranslateProfile.setText("VTProfile");
+        vlanTranslateProfile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vlanTranslateProfileActionPerformed(evt);
+            }
+        });
         fileMenu.add(vlanTranslateProfile);
 
         multicastGoupItem.setMnemonic('a');
@@ -416,6 +421,21 @@ public class MangerParks extends javax.swing.JFrame {
         tabbedPanel.setTitleAt(tabbedPanel.indexOfComponent(fpp),"Flow Profiles");
         tabbedPanel.setSelectedComponent(fpp);
     }//GEN-LAST:event_flowProfileItemActionPerformed
+
+    private void vlanTranslateProfileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vlanTranslateProfileActionPerformed
+         if(selectedOlt==null){
+            colt.setUser(txtUserOlt.getText());
+            colt.setPass(txtPassOlt.getText());
+            colt.setIpAccess(txtMgmtIpOlt.getText());
+            colt.connect();
+            selectedOlt=colt.getOlt();
+            colt.disconnect();
+        }
+        VlanTranslateProfilePanel fpp= new VlanTranslateProfilePanel(tabbedPanel,selectedOlt);
+        tabbedPanel.add(fpp);
+        tabbedPanel.setTitleAt(tabbedPanel.indexOfComponent(fpp),"Flow Profiles");
+        tabbedPanel.setSelectedComponent(fpp);
+    }//GEN-LAST:event_vlanTranslateProfileActionPerformed
 
     /**
      * @param args the command line arguments

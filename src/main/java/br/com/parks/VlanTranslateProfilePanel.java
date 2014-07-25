@@ -6,18 +6,32 @@
 
 package br.com.parks;
 
+import br.com.parks.entity.OLT;
+import br.com.parks.entity.ONU;
+import javax.swing.JTabbedPane;
+
 /**
  *
  * @author tiago
  */
 public class VlanTranslateProfilePanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form VlanTranslateProfilePanel
-     */
-    public VlanTranslateProfilePanel() {
+    private final JTabbedPane panel;
+    private OLT olt;
+    private ONU onu;
+    
+    public VlanTranslateProfilePanel(JTabbedPane panel) {
+        this.panel=panel;
         initComponents();
     }
+
+    public VlanTranslateProfilePanel(JTabbedPane panel, OLT olt) {
+        this.panel = panel;
+        this.olt = olt;
+        initComponents();
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,19 +42,21 @@ public class VlanTranslateProfilePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        spVtpName = new javax.swing.JScrollPane();
+        tbVtpName = new javax.swing.JTable();
+        txtVtpName = new javax.swing.JTextField();
+        btAddVtpName = new javax.swing.JButton();
+        spVtpItem = new javax.swing.JScrollPane();
+        tbVtpItem = new javax.swing.JTable();
+        lbType = new javax.swing.JLabel();
+        cbType = new javax.swing.JComboBox();
+        lbVlan = new javax.swing.JLabel();
+        cbVlan = new javax.swing.JComboBox();
+        btAddVtp = new javax.swing.JButton();
+        btClose1 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
-        jLabel2 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox();
-        jButton2 = new javax.swing.JButton();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbVtpName.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -56,16 +72,16 @@ public class VlanTranslateProfilePanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setMinWidth(40);
-            jTable1.getColumnModel().getColumn(0).setMaxWidth(40);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
+        spVtpName.setViewportView(tbVtpName);
+        if (tbVtpName.getColumnModel().getColumnCount() > 0) {
+            tbVtpName.getColumnModel().getColumn(0).setMinWidth(40);
+            tbVtpName.getColumnModel().getColumn(0).setMaxWidth(40);
+            tbVtpName.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        jButton1.setText("Add");
+        btAddVtpName.setText("Add");
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tbVtpItem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -81,13 +97,24 @@ public class VlanTranslateProfilePanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        spVtpItem.setViewportView(tbVtpItem);
 
-        jLabel1.setText("Type:");
+        lbType.setText("Type:");
 
-        jLabel2.setText("Vlan:");
+        lbVlan.setText("Vlan:");
 
-        jButton2.setText("Add Trans. Type");
+        btAddVtp.setForeground(new java.awt.Color(3, 122, 18));
+        btAddVtp.setText("Add Trans. Profile");
+
+        btClose1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/DeleteRed2.png"))); // NOI18N
+        btClose1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btClose1ActionPerformed(evt);
+            }
+        });
+
+        jButton1.setForeground(new java.awt.Color(236, 7, 7));
+        jButton1.setText("Remove VTP");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -96,25 +123,29 @@ public class VlanTranslateProfilePanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(lbType)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cbType, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(lbVlan)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(cbVlan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(spVtpItem, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btAddVtp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                    .addComponent(jButton2))
+                        .addComponent(jButton1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(txtVtpName, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btAddVtpName))
+                        .addComponent(spVtpName, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(btClose1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -124,35 +155,45 @@ public class VlanTranslateProfilePanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
+                            .addComponent(txtVtpName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btAddVtpName))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(spVtpName, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(spVtpItem, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbType)
+                    .addComponent(cbType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbVlan)
+                    .addComponent(cbVlan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 99, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btAddVtp)
+                        .addComponent(jButton1))
+                    .addComponent(btClose1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btClose1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClose1ActionPerformed
+        panel.remove(panel.indexOfComponent(this));
+    }//GEN-LAST:event_btClose1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btAddVtp;
+    private javax.swing.JButton btAddVtpName;
+    private javax.swing.JButton btClose1;
+    private javax.swing.JComboBox cbType;
+    private javax.swing.JComboBox cbVlan;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox jComboBox1;
-    private javax.swing.JComboBox jComboBox2;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lbType;
+    private javax.swing.JLabel lbVlan;
+    private javax.swing.JScrollPane spVtpItem;
+    private javax.swing.JScrollPane spVtpName;
+    private javax.swing.JTable tbVtpItem;
+    private javax.swing.JTable tbVtpName;
+    private javax.swing.JTextField txtVtpName;
     // End of variables declaration//GEN-END:variables
 }
