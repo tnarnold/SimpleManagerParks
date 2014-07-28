@@ -93,6 +93,32 @@ public class ControllerOlt {
         return onu;
     }
 
+    public List<ONU> getOnusByIpAddress(String ipAddr) {
+        List<ONU> onus = new ArrayList<>();
+        for (ONU o : getOnus()) {
+            if (o.getMgmtIp().contains(ipAddr)) {
+                onus.add(o);
+            }
+        }
+        return onus;
+    }
+
+    /**
+     * Get ONUs list by management IP Address into List of ONUs
+     * @param ipAddr IP address of ONU or ONUs
+     * @param oList List of ONUs
+     * @return 
+     */
+    public List<ONU> getOnusByIpAddress(String ipAddr, List<ONU> oList) {
+        List<ONU> onus = new ArrayList<>();
+        for (ONU o : oList) {
+            if (o.getMgmtIp().contains(ipAddr)) {
+                onus.add(o);
+            }
+        }
+        return onus;
+    }
+
     /**
      * Get an ONU list by serial number of equipment
      *
@@ -110,15 +136,15 @@ public class ControllerOlt {
     }
 
     /**
-     * Return the ONU in an especified list of ONUs
+     * Return the ONUs in an especified list of ONUs
      *
      * @param serial serial number of ONU
-     * @param os List of ONUs collected before
+     * @param oList List of ONUs collected before
      * @return
      */
-    public List<ONU> getOnusBySerial(String serial, List<ONU> os) {
+    public List<ONU> getOnusBySerial(String serial, List<ONU> oList) {
         List<ONU> onus = new ArrayList<ONU>();
-        for (ONU o : os) {
+        for (ONU o : oList) {
             if (o.getSerial().contains(serial)) {
                 onus.add(o);
             }
@@ -291,9 +317,11 @@ public class ControllerOlt {
 
     /**
      * Initialize the connection in the OLT
+     *
      * @return true if is connected
      */
     public boolean connect() {
+        boolean cState = false;
         if (!user.isEmpty() && !pass.isEmpty()) {
             try {
                 s = this.jsch.getSession(this.user, this.ipAccess);
@@ -332,6 +360,8 @@ public class ControllerOlt {
                 Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
             }
+        } else {
+            return false;
         }
         return true;
     }

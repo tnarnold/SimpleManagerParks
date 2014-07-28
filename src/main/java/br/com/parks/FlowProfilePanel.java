@@ -7,6 +7,7 @@ package br.com.parks;
 
 import br.com.parks.entity.OLT;
 import br.com.parks.entity.ONU;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTabbedPane;
 import javax.swing.table.DefaultTableModel;
@@ -20,24 +21,24 @@ public class FlowProfilePanel extends javax.swing.JPanel {
     private final JTabbedPane panel;
     private OLT olt;
     private ONU onu;
+
     /**
      * Creates new form FlowProfilePanel
+     *
      * @param panel
      */
     public FlowProfilePanel(JTabbedPane panel) {
         this.panel = panel;
         initComponents();
-        
+
     }
 
     public FlowProfilePanel(JTabbedPane panel, OLT olt) {
         this.panel = panel;
         this.olt = olt;
         initComponents();
-        displayFlowItemProfileTable(olt.getFlowProfiles());
-        displayFlowProfileTable(olt);
+        displayFlowNameProfileTable(olt);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -64,6 +65,7 @@ public class FlowProfilePanel extends javax.swing.JPanel {
         cbService = new javax.swing.JComboBox();
         lbService = new javax.swing.JLabel();
         btRemoveFlow = new javax.swing.JButton();
+        btClose1 = new javax.swing.JButton();
 
         tbFlowItem.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -82,6 +84,10 @@ public class FlowProfilePanel extends javax.swing.JPanel {
             }
         });
         spFlowItem.setViewportView(tbFlowItem);
+        if (tbFlowItem.getColumnModel().getColumnCount() > 0) {
+            tbFlowItem.getColumnModel().getColumn(0).setMinWidth(40);
+            tbFlowItem.getColumnModel().getColumn(0).setMaxWidth(40);
+        }
 
         btAddFlowName.setText("Add");
 
@@ -99,6 +105,11 @@ public class FlowProfilePanel extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tbFlowName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbFlowNameMouseClicked(evt);
             }
         });
         spFlowName.setViewportView(tbFlowName);
@@ -120,6 +131,13 @@ public class FlowProfilePanel extends javax.swing.JPanel {
 
         btRemoveFlow.setForeground(new java.awt.Color(227, 3, 3));
         btRemoveFlow.setText("Remove Flow");
+
+        btClose1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/DeleteRed2.png"))); // NOI18N
+        btClose1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btClose1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -157,21 +175,23 @@ public class FlowProfilePanel extends javax.swing.JPanel {
                                 .addComponent(btRemoveFlow)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(spFlowName, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtFlowName, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btAddFlowName)))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(spFlowName, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(txtFlowName, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btAddFlowName)))
+                            .addComponent(btClose1, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(spFlowItem, javax.swing.GroupLayout.PREFERRED_SIZE, 298, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(spFlowItem, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbFlowType)
@@ -183,23 +203,46 @@ public class FlowProfilePanel extends javax.swing.JPanel {
                             .addComponent(cbEncryption, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbEncryption)
                             .addComponent(cbService, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbService))
-                        .addGap(0, 60, Short.MAX_VALUE))
-                    .addComponent(spFlowName, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addComponent(lbService)))
+                    .addComponent(spFlowName, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btAddFlowName)
                     .addComponent(txtFlowName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btAddFlow)
-                    .addComponent(btRemoveFlow))
+                    .addComponent(btAddFlowName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btAddFlow)
+                        .addComponent(btRemoveFlow))
+                    .addComponent(btClose1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btClose1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btClose1ActionPerformed
+        panel.remove(panel.indexOfComponent(this));
+    }//GEN-LAST:event_btClose1ActionPerformed
+
+    private void tbFlowNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbFlowNameMouseClicked
+        if (olt != null) {
+            cleanTableResultsFlowItem();
+            int row = tbFlowName.getSelectedRow();
+            List<String> flows = new ArrayList<>();
+            String f = tbFlowName.getModel().getValueAt(row, 1).toString();
+            for (String flow : olt.getFlowProfiles()) {
+                if (flow.contains(f)) {
+                    flows.add(flow);
+                }
+            }
+            displayFlowItemProfileTable(flows);
+        }
+    }//GEN-LAST:event_tbFlowNameMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAddFlow;
     private javax.swing.JButton btAddFlowName;
+    private javax.swing.JButton btClose1;
     private javax.swing.JButton btRemoveFlow;
     private javax.swing.JComboBox cbEncryption;
     private javax.swing.JComboBox cbFlowType;
@@ -215,25 +258,45 @@ public class FlowProfilePanel extends javax.swing.JPanel {
     private javax.swing.JTable tbFlowName;
     private javax.swing.JTextField txtFlowName;
     // End of variables declaration//GEN-END:variables
-    
+
     private void displayFlowItemProfileTable(List<String> flow) {
         DefaultTableModel dtm = (DefaultTableModel) tbFlowItem.getModel();
         for (String r : flow) {
-            String[] rbwp = r.split(",");
-            dtm.addRow(new String[]{rbwp[1], rbwp[2], rbwp[3], rbwp[4]});
+            String[] rfp = r.split(",");
+            dtm.addRow(new String[]{rfp[1], rfp[2], rfp[3], rfp[4], rfp[5], rfp[6], rfp[7], rfp.length==9 ? rfp[8] : ""});
         }
         tbFlowItem.setModel(dtm);
     }
 
-    private void displayFlowProfileTable(OLT olt) {
+    private void displayFlowNameProfileTable(OLT olt) {
         DefaultTableModel dtm = (DefaultTableModel) tbFlowName.getModel();
-        int count=0;
-        for (String r : olt.getBwProfile()) {
-            count++;
-            String[] rbwp = r.split(",");
-            dtm.addRow(new String[]{Integer.toString(count), rbwp[0]});
+        int count = 0;
+        cleanTableResultsFlowName();
+        String fname = "";
+        for (String r : olt.getFlowProfiles()) {
+            String[] rfnp = r.split(",");
+            if (!rfnp[0].equals(fname)) {
+                count++;
+                dtm.addRow(new String[]{Integer.toString(count), rfnp[0]});
+            }
+            fname = rfnp[0];
         }
         tbFlowName.setModel(dtm);
-        count=0;
+        count = 0;
+    }
+
+    private void cleanTableResultsFlowItem() {
+        DefaultTableModel dtm = (DefaultTableModel) tbFlowItem.getModel();
+        while (dtm.getRowCount() > 0) {
+            dtm.removeRow(0);
+        }
+
+    }
+
+    private void cleanTableResultsFlowName() {
+        DefaultTableModel dtm = (DefaultTableModel) tbFlowName.getModel();
+        while (dtm.getRowCount() > 0) {
+            dtm.removeRow(0);
+        }
     }
 }

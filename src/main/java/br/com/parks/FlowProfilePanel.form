@@ -57,13 +57,16 @@
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="spFlowName" pref="0" max="32767" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="txtFlowName" min="-2" pref="128" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="btAddFlowName" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="spFlowName" pref="0" max="32767" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="txtFlowName" min="-2" pref="128" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Component id="btAddFlowName" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
+                          <Component id="btClose1" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -75,9 +78,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="spFlowItem" min="-2" pref="298" max="-2" attributes="0"/>
+              <Component id="spFlowItem" min="-2" pref="237" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="lbFlowType" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -92,16 +95,21 @@
                           <Component id="cbService" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="lbService" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="0" pref="60" max="32767" attributes="0"/>
                   </Group>
-                  <Component id="spFlowName" pref="0" max="32767" attributes="0"/>
+                  <Component id="spFlowName" min="-2" pref="121" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btAddFlowName" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtFlowName" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btAddFlow" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btRemoveFlow" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btAddFlowName" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="30" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                      <Component id="btAddFlow" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btRemoveFlow" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Component id="btClose1" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -132,7 +140,7 @@
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                <Column maxWidth="40" minWidth="40" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -221,6 +229,9 @@
               <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tbFlowNameMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -287,6 +298,16 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Remove Flow"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btClose1">
+      <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/img/DeleteRed2.png"/>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btClose1ActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
