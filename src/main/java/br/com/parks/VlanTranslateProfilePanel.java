@@ -8,7 +8,10 @@ package br.com.parks;
 
 import br.com.parks.entity.OLT;
 import br.com.parks.entity.ONU;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JTabbedPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -29,6 +32,7 @@ public class VlanTranslateProfilePanel extends javax.swing.JPanel {
         this.panel = panel;
         this.olt = olt;
         initComponents();
+        displayVtpNameTable();
     }
     
     
@@ -72,6 +76,11 @@ public class VlanTranslateProfilePanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
+        tbVtpName.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbVtpNameMouseClicked(evt);
+            }
+        });
         spVtpName.setViewportView(tbVtpName);
         if (tbVtpName.getColumnModel().getColumnCount() > 0) {
             tbVtpName.getColumnModel().getColumn(0).setMinWidth(40);
@@ -86,11 +95,11 @@ public class VlanTranslateProfilePanel extends javax.swing.JPanel {
 
             },
             new String [] {
-                "IDX", "Mode", "Operation", "VLAN X", "VLAN C", "Filter Prio", ""
+                "IDX", "Mode", "Operation", "VLAN X", "VLAN C", "Filter Prio", "Vlan Prio", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, false, true
+                false, false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -98,6 +107,10 @@ public class VlanTranslateProfilePanel extends javax.swing.JPanel {
             }
         });
         spVtpItem.setViewportView(tbVtpItem);
+        if (tbVtpItem.getColumnModel().getColumnCount() > 0) {
+            tbVtpItem.getColumnModel().getColumn(0).setMinWidth(35);
+            tbVtpItem.getColumnModel().getColumn(0).setMaxWidth(35);
+        }
 
         lbType.setText("Type:");
 
@@ -180,6 +193,21 @@ public class VlanTranslateProfilePanel extends javax.swing.JPanel {
         panel.remove(panel.indexOfComponent(this));
     }//GEN-LAST:event_btClose1ActionPerformed
 
+    private void tbVtpNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbVtpNameMouseClicked
+       if (olt != null) {
+            cleanVtpNameTable();
+            int row = tbVtpName.getSelectedRow();
+            List<String> vtpi = new ArrayList<String>();
+            String f = tbVtpName.getModel().getValueAt(row, 1).toString();
+            for (String flow : olt.getFlowProfiles()) {
+                if (flow.contains(f)) {
+                    vtpi.add(flow);
+                }
+            }
+            displayVtpItemTable(vtpi);
+        }
+    }//GEN-LAST:event_tbVtpNameMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAddVtp;
@@ -196,4 +224,43 @@ public class VlanTranslateProfilePanel extends javax.swing.JPanel {
     private javax.swing.JTable tbVtpName;
     private javax.swing.JTextField txtVtpName;
     // End of variables declaration//GEN-END:variables
+    
+    private void displayVtpNameTable(){
+        DefaultTableModel dtm = (DefaultTableModel) tbVtpName.getModel();
+        int count = 0;
+        cleanVtpNameTable();
+        String fname = "";
+        for (String r : olt.getVlanTranslate()) {
+            String[] rvtpi = r.split(",");
+            if (!rvtpi[0].equals(fname)) {
+                count++;
+                dtm.addRow(new String[]{Integer.toString(count), rvtpi[0]});
+            }
+            fname = rvtpi[0];
+        }
+        tbVtpName.setModel(dtm);
+    }
+    
+    private void displayVtpItemTable(List<String> vtp){
+        DefaultTableModel dtm = (DefaultTableModel) tbVtpItem.getModel();
+        for (String r : vtp) {
+            String[] rfp = r.split(",");
+            dtm.addRow(new String[]{rfp[1], rfp[2], rfp[3], rfp[4], rfp[5], rfp[6], rfp[7], rfp.length==9 ? rfp[8] : ""});
+        }
+        tbVtpItem.setModel(dtm);
+    }
+    
+    public void cleanVtpNameTable(){
+        DefaultTableModel dtm = (DefaultTableModel) tbVtpName.getModel();
+        while (dtm.getRowCount() > 0) {
+            dtm.removeRow(0);
+        }
+    }
+
+    public void cleanVtpItemTable(){
+        DefaultTableModel dtm = (DefaultTableModel) tbVtpItem.getModel();
+        while (dtm.getRowCount() > 0) {
+            dtm.removeRow(0);
+        }
+    }
 }

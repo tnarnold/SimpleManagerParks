@@ -94,7 +94,7 @@ public class ControllerOlt {
     }
 
     public List<ONU> getOnusByIpAddress(String ipAddr) {
-        List<ONU> onus = new ArrayList<>();
+        List<ONU> onus = new ArrayList<ONU>();
         for (ONU o : getOnus()) {
             if (o.getMgmtIp().contains(ipAddr)) {
                 onus.add(o);
@@ -110,7 +110,7 @@ public class ControllerOlt {
      * @return 
      */
     public List<ONU> getOnusByIpAddress(String ipAddr, List<ONU> oList) {
-        List<ONU> onus = new ArrayList<>();
+        List<ONU> onus = new ArrayList<ONU>();
         for (ONU o : oList) {
             if (o.getMgmtIp().contains(ipAddr)) {
                 onus.add(o);
@@ -219,7 +219,7 @@ public class ControllerOlt {
      * @return List of bandwidth profiles in the OLT
      */
     public List<String> getBandWidthProfiles() {
-        ArrayList<String> bwps = new ArrayList<>();
+        ArrayList<String> bwps = new ArrayList<String>();
         e.send("show gpon profile bandwidth\n");
         e.expect("#");
         String[] bwp = e.before.split("[\\n\\r]+");
@@ -364,6 +364,14 @@ public class ControllerOlt {
             return false;
         }
         return true;
+    }
+    
+    public boolean createFlowProfile(){
+        return false;
+    }
+    
+    public boolean createVlanTranslateProfile(){
+        return false;
     }
 
     public boolean provisioningOnu(ONU onu) {

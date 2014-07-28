@@ -183,7 +183,7 @@ public class ControllerOltTest {
 
     @Test
     public void testGetBandWidthProfiles() {
-        ArrayList<String> bwps=new ArrayList<>();
+        ArrayList<String> bwps=new ArrayList<String>();
         bwps.add("pks_data_10Mb,INTERNET,0,0,10240");
         bwps.add("pks_mgmt_1Mb,MANAGEMENT,0,1024,1152");
         assertEquals(bwps.get(0), c.getBandWidthProfiles().get(0));

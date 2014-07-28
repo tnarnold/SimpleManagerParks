@@ -7,6 +7,7 @@ package br.com.parks;
 
 import br.com.parks.entity.OLT;
 import br.com.parks.entity.ONU;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTabbedPane;
@@ -37,7 +38,7 @@ public class FlowProfilePanel extends javax.swing.JPanel {
         this.panel = panel;
         this.olt = olt;
         initComponents();
-        displayFlowNameProfileTable(olt);
+        displayFlowNameProfileTable();
     }
 
     /**
@@ -81,6 +82,11 @@ public class FlowProfilePanel extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tbFlowItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbFlowItemMouseClicked(evt);
             }
         });
         spFlowItem.setViewportView(tbFlowItem);
@@ -227,7 +233,7 @@ public class FlowProfilePanel extends javax.swing.JPanel {
         if (olt != null) {
             cleanTableResultsFlowItem();
             int row = tbFlowName.getSelectedRow();
-            List<String> flows = new ArrayList<>();
+            List<String> flows = new ArrayList<String>();
             String f = tbFlowName.getModel().getValueAt(row, 1).toString();
             for (String flow : olt.getFlowProfiles()) {
                 if (flow.contains(f)) {
@@ -237,6 +243,10 @@ public class FlowProfilePanel extends javax.swing.JPanel {
             displayFlowItemProfileTable(flows);
         }
     }//GEN-LAST:event_tbFlowNameMouseClicked
+
+    private void tbFlowItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbFlowItemMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tbFlowItemMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -268,7 +278,7 @@ public class FlowProfilePanel extends javax.swing.JPanel {
         tbFlowItem.setModel(dtm);
     }
 
-    private void displayFlowNameProfileTable(OLT olt) {
+    private void displayFlowNameProfileTable() {
         DefaultTableModel dtm = (DefaultTableModel) tbFlowName.getModel();
         int count = 0;
         cleanTableResultsFlowName();
