@@ -195,13 +195,13 @@ public class VlanTranslateProfilePanel extends javax.swing.JPanel {
 
     private void tbVtpNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbVtpNameMouseClicked
        if (olt != null) {
-            cleanVtpNameTable();
+            cleanVtpItemTable();
             int row = tbVtpName.getSelectedRow();
             List<String> vtpi = new ArrayList<String>();
             String f = tbVtpName.getModel().getValueAt(row, 1).toString();
-            for (String flow : olt.getFlowProfiles()) {
-                if (flow.contains(f)) {
-                    vtpi.add(flow);
+            for (String v : olt.getVlanTranslate()) {
+                if (v.contains(f)) {
+                    vtpi.add(v);
                 }
             }
             displayVtpItemTable(vtpi);

@@ -65,12 +65,12 @@
               <Component id="pnOnuProv" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pnOnuConf" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jButton4" max="32767" attributes="0"/>
-                  <Component id="btClose" max="32767" attributes="0"/>
+              <EmptySpace pref="13" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jButton4" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Component id="btClose" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -169,7 +169,6 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="txtAlias" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbAlias" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -179,9 +178,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbMgmtIP" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtMgmtIP" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbVtpIpHost" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cbVtpIpHost" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtMgmtIP" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -292,6 +291,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Reload"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btReloadActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="pnOnuConf">
       <Properties>

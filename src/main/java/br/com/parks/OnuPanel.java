@@ -7,6 +7,12 @@ package br.com.parks;
 
 import br.com.parks.entity.OLT;
 import br.com.parks.entity.ONU;
+import br.com.parks.util.ControllerOnu;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JTabbedPane;
 
 /**
@@ -15,26 +21,56 @@ import javax.swing.JTabbedPane;
  */
 public class OnuPanel extends javax.swing.JPanel {
 
+    private ExecutorService svc = Executors.newFixedThreadPool(1);
     private final JTabbedPane panel;
+    private ControllerOnu cOnu;
     private ONU onu;
     private OLT olt;
+    private boolean connected =false ;
+    private boolean stopOnu=true;
+    
 
     /**
      * Creates new form OnuPanel
+     *
+     * @param panel
      */
     public OnuPanel(JTabbedPane panel) {
         this.panel = panel;
         initComponents();
     }
 
-    public OnuPanel(JTabbedPane panel, ONU onu, OLT olt) {
+    public OnuPanel(JTabbedPane panel, final ONU onu, OLT olt) {
         this.panel = panel;
         initComponents();
         this.onu = onu;
         this.olt = olt;
         txtPass.setText("parks");
+        cOnu=new ControllerOnu(onu);
         fillFields();
-
+        
+//        svc.submit(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                ControllerOnu cOnut=new ControllerOnu();
+//                while (stopOnu) { 
+//                    connected=cOnut.connect();
+//                    try {
+//                        if(connected){
+//                            lbStatusCon.setText("Connected");
+//                            System.out.println("Connected");
+//                        }else{
+//                            lbStatusCon.setText("Disconnected");
+//                            System.out.println("Disconnected");
+//                        }
+//                        Thread.sleep(2000L);
+//                    } catch (InterruptedException ex) {
+//                      //  Logger.getLogger(OnuPanel.class.getName()).log(Level.SEVERE, null, ex);
+//                    }
+//                }
+//            }
+//        });
     }
 
     /**
@@ -174,7 +210,6 @@ public class OnuPanel extends javax.swing.JPanel {
         pnOnuProvLayout.setVerticalGroup(
             pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnOnuProvLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtAlias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbAlias)
@@ -183,9 +218,9 @@ public class OnuPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbMgmtIP)
-                    .addComponent(txtMgmtIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbVtpIpHost)
-                    .addComponent(cbVtpIpHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbVtpIpHost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtMgmtIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbVtpVeip, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -201,6 +236,11 @@ public class OnuPanel extends javax.swing.JPanel {
         );
 
         btReload.setText("Reload");
+        btReload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btReloadActionPerformed(evt);
+            }
+        });
 
         pnOnuConf.setBorder(javax.swing.BorderFactory.createTitledBorder("ONU Config"));
 
@@ -367,17 +407,29 @@ public class OnuPanel extends javax.swing.JPanel {
                 .addComponent(pnOnuProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnOnuConf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btClose, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btClose, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCloseActionPerformed
-        panel.remove(panel.indexOfComponent(this));
+        try {
+            stopOnu = false;
+            svc.shutdownNow();
+            svc.awaitTermination(1L, TimeUnit.SECONDS);
+            panel.remove(panel.indexOfComponent(this));
+        } catch (InterruptedException ex) {
+            Logger.getLogger(OnuPanel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_btCloseActionPerformed
+
+    private void btReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btReloadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btReloadActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -432,20 +484,20 @@ public class OnuPanel extends javax.swing.JPanel {
         txtMgmtIP.setText(onu.getMgmtIp());
         for (String fp : olt.getFlowProfiles()) {
             cbFlowProfile.addItem(fp);
-            if (onu.getFlowProfile()!=null && onu.getFlowProfile().equals(fp)) {
+            if (onu.getFlowProfile() != null && onu.getFlowProfile().equals(fp)) {
                 cbFlowProfile.setSelectedItem(fp);
             }
         }
         for (String vt : olt.getVlanTranslate()) {
-            String[] vtl=vt.split(",");
+            String[] vtl = vt.split(",");
             cbVtpIpHost.addItem(vtl[0]);
             cbVtpVeip.addItem(vtl[0]);
-            cbVtpPbmp.addItem("P1: "+vtl[0]+";");
-            cbVtpPbmp.addItem("P2: "+vtl[0]+";");
-            cbVtpPbmp.addItem("P1: "+vtl[0]+";P2: "+vtl[0]+";");
+            cbVtpPbmp.addItem("P1: " + vtl[0] + ";");
+            cbVtpPbmp.addItem("P2: " + vtl[0] + ";");
+            cbVtpPbmp.addItem("P1: " + vtl[0] + ";P2: " + vtl[0] + ";");
         }
         String brp = "";
-        if (onu.getVlanTranslate()!=null) {
+        if (onu.getVlanTranslate() != null) {
             for (String vtp : onu.getVlanTranslate()) {
                 if (vtp.matches(".*VEIP.*")) {
                     cbVtpVeip.setSelectedItem(vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")")));
@@ -459,13 +511,13 @@ public class OnuPanel extends javax.swing.JPanel {
             }
         }
         if (brp.matches(".*P1.*") && brp.matches(".*P2.*")) {
-            
+
             cbVtpPbmp.setSelectedItem(brp);
         } else if (brp.matches(".*P1.*") && !brp.matches(".*P2.*")) {
-           
+
             cbVtpPbmp.setSelectedItem(brp);
         } else if (!brp.matches(".*P1.*") && brp.matches(".*P2.*")) {
-           
+
             cbVtpPbmp.setSelectedItem(brp);
         }
 

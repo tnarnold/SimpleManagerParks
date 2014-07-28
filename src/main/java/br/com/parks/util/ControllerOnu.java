@@ -25,6 +25,7 @@ public class ControllerOnu {
 
     private ControllerOlt co;
     private OLT selectedOlt;
+    private ONU selectedOnu;
     private List<ONU> selectedOnus;
     private JSch jsch = null;
     private Session s = null;
@@ -35,6 +36,20 @@ public class ControllerOnu {
     private String user;
     private String pass;
     private String ipAccess;
+
+    public ControllerOnu(OLT olt) {
+        this.selectedOlt = olt;
+        selectedOnus = olt.getOnus();
+        this.co = new ControllerOlt(olt.getIpAccess(), olt.getUser(), olt.getPass());
+        co.connect();
+    }
+
+    public ControllerOnu(ONU onu) {
+        this.user=onu.getUser();
+        this.pass=onu.getPass();
+        this.ipAccess=onu.getMgmtIp();
+        this.selectedOnu = onu;
+    }
 
     public String getUser() {
         return user;
@@ -60,8 +75,6 @@ public class ControllerOnu {
         this.ipAccess = ipAccess;
     }
 
-    
-    
     public boolean connect() {
         if (!user.isEmpty() && !pass.isEmpty()) {
             try {
@@ -103,18 +116,6 @@ public class ControllerOnu {
             }
         }
         return true;
-    }
-
-    public ControllerOnu(OLT olt) {
-        this.selectedOlt = olt;
-        selectedOnus = olt.getOnus();
-        this.co = new ControllerOlt(olt.getIpAccess(), olt.getUser(), olt.getPass());
-        co.connect();
-    }
-
-    public ControllerOnu() {
-        this.co = new ControllerOlt(selectedOlt.getIpAccess(), selectedOlt.getUser(), selectedOlt.getPass());
-        co.connect();
     }
 
     public ONU configOnu() {
