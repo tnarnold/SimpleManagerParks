@@ -12,6 +12,7 @@ import java.util.List;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -32,7 +33,8 @@ public class ControllerOltTest {
     public void tearDown() {
         c.disconnect();
     }
-
+    
+    @Ignore
     @Test
     public void testGetFlowProfiles() {
         System.out.println("Testing if get all flow profiles:");
@@ -48,6 +50,7 @@ public class ControllerOltTest {
         assertEquals(pfs.get(2), c.getFlowProfiles().get(2));
     }
 
+    @Ignore
     @Test
     public void testGetVlanTranlationProfiles() {
         System.out.println("Testing if get all Vlan Translation Profiles:");
@@ -58,9 +61,7 @@ public class ControllerOltTest {
         assertEquals(vpts.get(1), c.getVlanTranslationProfiles().get(1));
     }
 
-    /**
-     * This test would be completed with all attributes of the OLT
-     */
+    @Ignore
     @Test
     public void testGetOlt() {
         System.out.println("Test if OLT object is the same object that we want:");
@@ -86,6 +87,7 @@ public class ControllerOltTest {
         assertEquals(olt.getBwProfile().get(0), oltResult.getBwProfile().get(0));
     }
 
+    @Ignore
     @Test
     public void testGetOnus() {
         System.out.println("getOnus");
@@ -181,6 +183,7 @@ public class ControllerOltTest {
 
     }
 
+    @Ignore
     @Test
     public void testGetBandWidthProfiles() {
         ArrayList<String> bwps=new ArrayList<String>();
@@ -188,6 +191,28 @@ public class ControllerOltTest {
         bwps.add("pks_mgmt_1Mb,MANAGEMENT,0,1024,1152");
         assertEquals(bwps.get(0), c.getBandWidthProfiles().get(0));
         assertEquals(bwps.get(1), c.getBandWidthProfiles().get(1));
+    }
+    
+    @Test
+    public void testProvisioningOnu(){
+        ONU onu1 = new ONU();
+        ArrayList<String> vtp = null;
+        onu1.setIndex(2);
+        onu1.setIfGpon("gpon2/3");
+        onu1.setSerial("prks00b25ccb");
+        onu1.setAlias("rt2");
+        onu1.setMgmtIp("192.168.2.102/24");
+        onu1.setFlowProfile("pks_routers");
+        vtp = new ArrayList<String>();
+        vtp.add("5: IPHOST (_100)");
+        vtp.add("6: VEIP (_101)");
+        onu1.setVlanTranslate(vtp);
+        
+        c.provisioningOnu(onu1);
+        
+        ONU onuRep=c.getOnu("prks00b25ccb");
+        
+        assertEquals(onu1,onuRep);
     }
 
 }

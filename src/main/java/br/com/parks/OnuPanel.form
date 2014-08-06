@@ -40,7 +40,9 @@
                       <Component id="btReload" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jButton4" min="-2" max="-2" attributes="0"/>
+                      <Component id="btProvisioningAndConfig" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btRemoveOnu" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btClose" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
@@ -65,9 +67,12 @@
               <Component id="pnOnuProv" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pnOnuConf" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="13" max="32767" attributes="0"/>
+              <EmptySpace pref="29" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jButton4" alignment="1" min="-2" pref="30" max="-2" attributes="0"/>
+                  <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                      <Component id="btProvisioningAndConfig" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="btRemoveOnu" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <Component id="btClose" alignment="1" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -95,6 +100,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="6d" green="6d" red="6d" type="rgb"/>
         </Property>
+        <Property name="enabled" type="boolean" value="false"/>
         <Property name="selectedTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="c3" green="c3" red="c3" type="rgb"/>
         </Property>
@@ -131,7 +137,7 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Group type="102" attributes="0">
-                                          <Component id="jCheckBox1" min="-2" max="-2" attributes="0"/>
+                                          <Component id="ckbBridge" min="-2" max="-2" attributes="0"/>
                                           <EmptySpace max="32767" attributes="0"/>
                                           <Component id="lbVtpVeip" min="-2" max="-2" attributes="0"/>
                                       </Group>
@@ -186,7 +192,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cbVtpVeip" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbVtpVeip" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCheckBox1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="ckbBridge" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -280,10 +286,13 @@
             <Property name="text" type="java.lang.String" value="Provisioning"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+        <Component class="javax.swing.JCheckBox" name="ckbBridge">
           <Properties>
             <Property name="text" type="java.lang.String" value="Bridge"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ckbBridgeActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -310,8 +319,8 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="ckbPPPoE" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbWanIp" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbDefaultGw" min="-2" max="-2" attributes="0"/>
                       <Group type="103" alignment="1" groupAlignment="0" attributes="0">
                           <Component id="ckbNat" min="-2" max="-2" attributes="0"/>
                           <Component id="lbLanIp" min="-2" max="-2" attributes="0"/>
@@ -320,47 +329,46 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="txtLanIp" min="-2" pref="218" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="lbDhcpRangeFirst" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="ckbDhcp" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="ckbDhcpWan" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jCheckBox3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="ckbPppoe" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="lbDhcpRangeLast" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="txtLanIp" min="-2" pref="218" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                                  <Component id="ckbDhcpRange" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtDhcpRangeLast" max="32767" attributes="0"/>
+                              <Component id="txtDhcpRangeLast" pref="187" max="32767" attributes="0"/>
                               <Component id="txtDhcpRangeFirst" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="jTextField8" pref="215" max="32767" attributes="0"/>
-                              <Component id="jTextField7" max="32767" attributes="0"/>
+                              <Component id="txtDefaultGw" pref="215" max="32767" attributes="0"/>
+                              <Component id="txtWanIpAddress" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel15" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lbPppoeUser" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jTextField9" min="-2" pref="190" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                  <Component id="txtPppoeUser" max="32767" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lbPppoePass" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jPasswordField2" min="-2" pref="124" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
-                                  <Component id="btConfig" min="-2" max="-2" attributes="0"/>
+                                  <Component id="txtPppoePass" min="-2" pref="177" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                          <EmptySpace pref="28" max="32767" attributes="0"/>
+                          <Component id="btConfig" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -374,29 +382,29 @@
                       <Component id="lbLanIp" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtLanIp" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtDhcpRangeFirst" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbDhcpRangeFirst" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="ckbDhcpRange" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="txtDhcpRangeLast" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbDhcpRangeLast" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="ckbNat" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="ckbDhcp" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jCheckBox3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="ckbDhcpWan" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="ckbPppoe" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="ckbPPPoE" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField7" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel15" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jTextField9" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbWanIp" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtWanIpAddress" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbPppoeUser" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtPppoeUser" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jTextField8" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel14" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jPasswordField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtDefaultGw" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbDefaultGw" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbPppoePass" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtPppoePass" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btConfig" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -417,11 +425,6 @@
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbDhcpRangeFirst">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="DHCP Range:"/>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JTextField" name="txtDhcpRangeLast">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
@@ -437,12 +440,15 @@
             <Property name="text" type="java.lang.String" value="NAT"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="ckbDhcp">
+        <Component class="javax.swing.JCheckBox" name="ckbDhcpWan">
           <Properties>
             <Property name="text" type="java.lang.String" value="DHCP WAN"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ckbDhcpWanActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="ckbPPPoE">
+        <Component class="javax.swing.JLabel" name="lbWanIp">
           <Properties>
             <Property name="text" type="java.lang.String" value="WAN IP:"/>
           </Properties>
@@ -452,39 +458,53 @@
             <Property name="text" type="java.lang.String" value="Config"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField7">
+        <Component class="javax.swing.JTextField" name="txtWanIpAddress">
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField8">
+        <Component class="javax.swing.JTextField" name="txtDefaultGw">
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel14">
+        <Component class="javax.swing.JLabel" name="lbDefaultGw">
           <Properties>
             <Property name="text" type="java.lang.String" value="Def. GW:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JCheckBox" name="jCheckBox3">
+        <Component class="javax.swing.JCheckBox" name="ckbPppoe">
           <Properties>
             <Property name="text" type="java.lang.String" value="PPPoE"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ckbPppoeActionPerformed"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel15">
+        <Component class="javax.swing.JLabel" name="lbPppoeUser">
           <Properties>
             <Property name="text" type="java.lang.String" value="User:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel16">
+        <Component class="javax.swing.JLabel" name="lbPppoePass">
           <Properties>
             <Property name="text" type="java.lang.String" value="Pass:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField9">
+        <Component class="javax.swing.JTextField" name="txtPppoeUser">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JPasswordField" name="jPasswordField2">
+        <Component class="javax.swing.JPasswordField" name="txtPppoePass">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JCheckBox" name="ckbDhcpRange">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="DHCP Range"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ckbDhcpRangeActionPerformed"/>
+          </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="ckbDhcpRange.setHorizontalTextPosition(SwingConstants.LEFT);"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
@@ -493,7 +513,7 @@
         <Property name="text" type="java.lang.String" value="Ok"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton4">
+    <Component class="javax.swing.JButton" name="btProvisioningAndConfig">
       <Properties>
         <Property name="text" type="java.lang.String" value="Provisioning+Config"/>
       </Properties>
@@ -506,6 +526,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btCloseActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="btRemoveOnu">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Remove ONU"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btRemoveOnuActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

@@ -105,9 +105,10 @@ public class ControllerOlt {
 
     /**
      * Get ONUs list by management IP Address into List of ONUs
+     *
      * @param ipAddr IP address of ONU or ONUs
      * @param oList List of ONUs
-     * @return 
+     * @return
      */
     public List<ONU> getOnusByIpAddress(String ipAddr, List<ONU> oList) {
         List<ONU> onus = new ArrayList<ONU>();
@@ -196,8 +197,12 @@ public class ControllerOlt {
                                 String[] vtp = rhead.split("\n#");
                                 for (int vt = 0; vt < vtp.length; vt++) {
                                     vtps.add(vtp[vt].trim());
+                                    if (vtp[vt].startsWith("1:") || vtp[vt].startsWith("2:")) {
+                                        onuTemp.setBridge(true);
+                                    }
                                 }
                                 onuTemp.setVlanTranslate(vtps);
+
                             }
                         }
                         onuTemp.setOlt(olt);
@@ -365,12 +370,12 @@ public class ControllerOlt {
         }
         return true;
     }
-    
-    public boolean createFlowProfile(){
+
+    public boolean createFlowProfile() {
         return false;
     }
-    
-    public boolean createVlanTranslateProfile(){
+
+    public boolean createVlanTranslateProfile() {
         return false;
     }
 
@@ -379,31 +384,61 @@ public class ControllerOlt {
         String veip = "";
         String pbmp1 = "";
         String pbmp2 = "";
-        for (String vtp : onu.getVlanTranslate()) {
-            if (vtp.matches(".*VEIP.*")) {
-                veip = vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")"));
-            } else if (vtp.matches(".*IPHOST.*")) {
-                iphost = vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")"));
-            } else if (!vtp.matches(".*VEIP.*") && vtp.matches(".*IPHOST.*")) {
-                pbmp1 = vtp.startsWith("1:") ? vtp.substring(vtp.indexOf("1: ")) : "";
-                pbmp2 = vtp.startsWith("2:") ? vtp.substring(vtp.indexOf("2: ")) : "";
-            }
-        }
-        String command = "interface " + onu.getIfGpon() + "\n"
-                + "onu " + onu.getSerial() + " alias " + onu.getAlias() + "\n"
-                + "onu " + onu.getSerial() + " ip address " + onu.getMgmtIp() + " gw " + onu.getDefGw() + "\n"
-                + "onu " + onu.getSerial() + " flow-profile " + onu.getFlowProfile() + "\n"
-                + "onu " + onu.getSerial() + " vlan-translation-profile " + onu.getVlanTranslate() + " iphost\n"
-                + "onu " + onu.getSerial() + " vlan-translation-profile " + "" + " veip\n"
-                + "!\n"
-                + "end\n"
-                + "copy running-config startup-config\n";
+        if (!onu.isBridge()) {
+            
+            String command = "interface " + onu.getIfGpon() + "\n"
+                    + "onu " + onu.getSerial() + " alias " + onu.getAlias() + "\n"
+                    + "onu " + onu.getSerial() + " ip address " + onu.getMgmtIp() + "\n"
+                    + "onu " + onu.getSerial() + " flow-profile " + onu.getFlowProfile() + "\n"
+                    + "onu " + onu.getSerial() + " vlan-translation-profile " + onu.getVlanTranslate() + " iphost\n"
+                    + "onu " + onu.getSerial() + " vlan-translation-profile " + "" + " veip\n"
+                    + "!\n"
+                    + "end\n"
+                    + "copy running-config startup-config\n";
 
+            e.send("conf t\n");
+            e.expect("(config)#");
+            e.send(command);
+            e.expect("(config)#");
+        } else {
+            for (String vtp : onu.getVlanTranslate()) {
+                if (vtp.matches(".*VEIP.*")) {
+                    veip = vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")"));
+                } else if (vtp.matches(".*IPHOST.*")) {
+                    iphost = vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")"));
+                } else if (!vtp.matches(".*VEIP.*") && vtp.matches(".*IPHOST.*")) {
+                    pbmp1 = vtp.startsWith("1:") ? vtp.substring(vtp.indexOf("1: ")) : "";
+                    pbmp2 = vtp.startsWith("2:") ? vtp.substring(vtp.indexOf("2: ")) : "";
+                }
+            }
+            String command = "interface " + onu.getIfGpon() + "\n"
+                    + "onu " + onu.getSerial() + " alias " + onu.getAlias() + "\n"
+                    + "onu " + onu.getSerial() + " ip address " + onu.getMgmtIp() + " gw " + onu.getDefGw() + "\n"
+                    + "onu " + onu.getSerial() + " flow-profile " + onu.getFlowProfile() + "\n"
+                    + "onu " + onu.getSerial() + " vlan-translation-profile " + onu.getVlanTranslate() + " iphost\n"
+                    + "onu " + onu.getSerial() + " vlan-translation-profile " + "" + " veip\n"
+                    + "!\n"
+                    + "end\n"
+                    + "copy running-config startup-config\n";
+
+            e.send("conf t\n");
+            e.expect("(config)#");
+            e.send(command);
+            e.expect("(config)#");
+        }
+        return false;
+    }
+
+    public void removeOnu(ONU onu) {
         e.send("conf t\n");
         e.expect("(config)#");
-        e.send(command);
-        e.expect("(config)#");
-        return false;
+        e.send("interface "+onu.getIfGpon());
+        e.expect("(config-if)#");
+        e.send("no onu "+onu.getSerial());
+        e.expect("(config-if)#");
+        e.send("onu add serial-number "+onu.getSerial());
+        e.expect("(config-if)#");
+        e.send("ex\nex\n");
     }
 
     public void disconnect() {
