@@ -34,8 +34,6 @@
                       <Component id="lbPass" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="txtPass" min="-2" pref="155" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lbStatusCon" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btReload" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -61,13 +59,12 @@
                   <Component id="lbPass" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtPass" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btReload" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="lbStatusCon" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pnOnuProv" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pnOnuConf" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="29" max="32767" attributes="0"/>
+              <EmptySpace pref="25" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="1" groupAlignment="3" attributes="0">
                       <Component id="btProvisioningAndConfig" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
@@ -285,6 +282,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Provisioning"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btProvisioningActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JCheckBox" name="ckbBridge">
           <Properties>
@@ -508,11 +508,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JLabel" name="lbStatusCon">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Ok"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="btProvisioningAndConfig">
       <Properties>
         <Property name="text" type="java.lang.String" value="Provisioning+Config"/>

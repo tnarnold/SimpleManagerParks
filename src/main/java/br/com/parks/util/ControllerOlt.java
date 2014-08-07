@@ -385,13 +385,26 @@ public class ControllerOlt {
         String pbmp1 = "";
         String pbmp2 = "";
         if (!onu.isBridge()) {
-            
+            String vtpVeip="";
+            String vtpIphost="";
+            String alias="";
+            for(String vtp:onu.getVlanTranslate()){
+                if(vtp.contains("VEIP")){
+                    vtpVeip=vtp.substring(vtp.indexOf("(")+1,vtp.indexOf(")"));
+                }
+                if(vtp.contains("IPHOST")){
+                    vtpIphost=vtp.substring(vtp.indexOf("(")+1,vtp.indexOf(")"));
+                }
+            }
+            if(onu.getAlias()!=null){
+                if(onu.getAlias().length()>1) alias = "onu " + onu.getSerial() + " alias " + onu.getAlias() + "\n";
+            }
             String command = "interface " + onu.getIfGpon() + "\n"
-                    + "onu " + onu.getSerial() + " alias " + onu.getAlias() + "\n"
+                    + alias
                     + "onu " + onu.getSerial() + " ip address " + onu.getMgmtIp() + "\n"
                     + "onu " + onu.getSerial() + " flow-profile " + onu.getFlowProfile() + "\n"
-                    + "onu " + onu.getSerial() + " vlan-translation-profile " + onu.getVlanTranslate() + " iphost\n"
-                    + "onu " + onu.getSerial() + " vlan-translation-profile " + "" + " veip\n"
+                    + "onu " + onu.getSerial() + " vlan-translation-profile " + vtpIphost + " iphost\n"
+                    + "onu " + onu.getSerial() + " vlan-translation-profile " + vtpVeip + " veip\n"
                     + "!\n"
                     + "end\n"
                     + "copy running-config startup-config\n";

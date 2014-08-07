@@ -14,6 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
 
@@ -107,7 +108,6 @@ public class OnuPanel extends javax.swing.JPanel {
         txtPppoeUser = new javax.swing.JTextField();
         txtPppoePass = new javax.swing.JPasswordField();
         ckbDhcpRange = new javax.swing.JCheckBox();
-        lbStatusCon = new javax.swing.JLabel();
         btProvisioningAndConfig = new javax.swing.JButton();
         btClose = new javax.swing.JButton();
         btRemoveOnu = new javax.swing.JButton();
@@ -153,6 +153,11 @@ public class OnuPanel extends javax.swing.JPanel {
         lbVtpPbmp.setText("VTP PBMP:");
 
         btProvisioning.setText("Provisioning");
+        btProvisioning.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btProvisioningActionPerformed(evt);
+            }
+        });
 
         ckbBridge.setText("Bridge");
         ckbBridge.addActionListener(new java.awt.event.ActionListener() {
@@ -362,8 +367,6 @@ public class OnuPanel extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        lbStatusCon.setText("Ok");
-
         btProvisioningAndConfig.setText("Provisioning+Config");
 
         btClose.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/DeleteRed2.png"))); // NOI18N
@@ -397,8 +400,6 @@ public class OnuPanel extends javax.swing.JPanel {
                         .addComponent(lbPass)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lbStatusCon)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btReload))
                     .addGroup(layout.createSequentialGroup()
@@ -418,13 +419,12 @@ public class OnuPanel extends javax.swing.JPanel {
                     .addComponent(txtSerial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbPass)
                     .addComponent(txtPass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btReload)
-                    .addComponent(lbStatusCon))
+                    .addComponent(btReload))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnOnuProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnOnuConf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btProvisioningAndConfig, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -478,12 +478,23 @@ public class OnuPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_ckbBridgeActionPerformed
 
     private void btRemoveOnuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btRemoveOnuActionPerformed
-        cOlt=new ControllerOlt(olt.getIpAccess(), olt.getUser(), olt.getPass());
+        cOlt = new ControllerOlt(olt.getIpAccess(), olt.getUser(), olt.getPass());
         cOlt.connect();
         cOlt.removeOnu(onu);
         cOlt.disconnect();
-        
+
     }//GEN-LAST:event_btRemoveOnuActionPerformed
+
+    private void btProvisioningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btProvisioningActionPerformed
+        ONU ponu = new ONU(onu.getIndex(), onu.getSerial(), onu.getIfGpon());
+        if (!onu.isBridge()) {
+            onu.setAlias(txtAlias.getText());
+            onu.setMgmtIp(txtMgmtIP.getText());
+            
+        }
+
+
+    }//GEN-LAST:event_btProvisioningActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -512,7 +523,6 @@ public class OnuPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lbPppoePass;
     private javax.swing.JLabel lbPppoeUser;
     private javax.swing.JLabel lbSerial;
-    private javax.swing.JLabel lbStatusCon;
     private javax.swing.JLabel lbVtpIpHost;
     private javax.swing.JLabel lbVtpPbmp;
     private javax.swing.JLabel lbVtpVeip;
@@ -534,7 +544,6 @@ public class OnuPanel extends javax.swing.JPanel {
 
     private void fillFields() {
         txtSerial.setText(onu.getSerial());
-        txtPass.setText(onu.getPass());
         txtAlias.setText(onu.getAlias());
         txtMgmtIP.setText(onu.getMgmtIp());
         String compare = "";
@@ -665,6 +674,15 @@ public class OnuPanel extends javax.swing.JPanel {
 
     public ONU getOnu() {
         return onu;
+    }
+
+    public boolean validateProvisioning() {
+        boolean ok = false;
+        if (txtAlias.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(pnOnuConf, "");
+        }
+
+        return ok;
     }
 
 }

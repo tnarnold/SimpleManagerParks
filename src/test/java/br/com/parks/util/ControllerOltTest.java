@@ -193,15 +193,16 @@ public class ControllerOltTest {
         assertEquals(bwps.get(1), c.getBandWidthProfiles().get(1));
     }
     
+    
     @Test
     public void testProvisioningOnu(){
         ONU onu1 = new ONU();
         ArrayList<String> vtp = null;
         onu1.setIndex(2);
         onu1.setIfGpon("gpon2/3");
-        onu1.setSerial("prks00b25ccb");
-        onu1.setAlias("rt2");
-        onu1.setMgmtIp("192.168.2.102/24");
+        onu1.setSerial("prks00b6150f");
+        onu1.setAlias("rt1");
+        onu1.setMgmtIp("192.168.2.101/24");
         onu1.setFlowProfile("pks_routers");
         vtp = new ArrayList<String>();
         vtp.add("5: IPHOST (_100)");
@@ -210,7 +211,7 @@ public class ControllerOltTest {
         
         c.provisioningOnu(onu1);
         
-        ONU onuRep=c.getOnu("prks00b25ccb");
+        ONU onuRep=c.getOnu("prks00b6150f");
         
         assertEquals(onu1,onuRep);
     }
