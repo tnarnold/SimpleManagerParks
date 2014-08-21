@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static junit.framework.TestCase.assertEquals;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -57,7 +58,7 @@ public class StringUtilTest {
             Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    @Ignore
     @Test
     public void testOltGetSerial() {
         System.out.println("Test transform data of collected olt serial command:");
@@ -67,7 +68,8 @@ public class StringUtilTest {
         assertEquals(serial, cmdr.oltGetSerial(e.before));
 
     }
-
+    
+    @Ignore
     @Test
     public void testOltGetMgmtIP() {
         System.out.println("Test collecting management interface ip:");
@@ -76,7 +78,7 @@ public class StringUtilTest {
         e.expect("#");
         assertEquals(mgmtIp, cmdr.oltGetMgmtIP(e.before));
     }
-
+    @Ignore
     @Test
     public void testOltGetHostname() {
         System.out.println("Test collected hostname of OLT:");
@@ -86,7 +88,7 @@ public class StringUtilTest {
         String result = cmdr.oltGetHostname(e.before);
         assertEquals(hn, result);
     }
-
+    @Ignore
     @Test
     public void testOnuGetClean() {
         System.out.println("Test if result is clean");

@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.Ignore;
 
 /**
  *
@@ -31,7 +32,7 @@ public class ControllerOnuTest {
     @After
     public void tearDown() {
     }
-
+    @Ignore
     @Test
     public void testGetOnu() {
         System.out.println("Test if the ONU come by serial:");

@@ -11,9 +11,6 @@ import br.com.parks.util.ControllerOlt;
 import br.com.parks.util.ControllerOnu;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingConstants;
@@ -436,7 +433,6 @@ public class OnuPanel extends javax.swing.JPanel {
 
     private void btCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btCloseActionPerformed
         stopOnu = false;
-        panel.remove(panel.indexOfComponent(this));
     }//GEN-LAST:event_btCloseActionPerformed
 
     private void btReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btReloadActionPerformed
@@ -482,7 +478,6 @@ public class OnuPanel extends javax.swing.JPanel {
         cOlt.connect();
         cOlt.removeOnu(onu);
         cOlt.disconnect();
-
     }//GEN-LAST:event_btRemoveOnuActionPerformed
 
     private void btProvisioningActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btProvisioningActionPerformed
@@ -490,7 +485,6 @@ public class OnuPanel extends javax.swing.JPanel {
         if (!onu.isBridge()) {
             onu.setAlias(txtAlias.getText());
             onu.setMgmtIp(txtMgmtIP.getText());
-            
         }
 
 
@@ -681,7 +675,6 @@ public class OnuPanel extends javax.swing.JPanel {
         if (txtAlias.getText().isEmpty()) {
             JOptionPane.showMessageDialog(pnOnuConf, "");
         }
-
         return ok;
     }
 

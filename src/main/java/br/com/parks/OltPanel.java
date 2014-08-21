@@ -6,7 +6,6 @@
 
 package br.com.parks;
 
-import br.com.parks.util.CloseIcon;
 import javax.swing.JTabbedPane;
 
 /**

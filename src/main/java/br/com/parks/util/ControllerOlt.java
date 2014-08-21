@@ -60,15 +60,19 @@ public class ControllerOlt {
 
     public OLT getOlt() {
         OLT o = new OLT();
-        e.send("show inventory\n");
-        e.expect("# ");
+        e.send("conf t\n");
+        e.expect("(config)#");
+        e.send("do show inventory\n");
+        e.expect("(config)#");
         o.setSerial(cmdr.oltGetSerial(e.before));
-        e.send("show interface mgmt\n");
-        e.expect("#");
+        e.send("do show interface mgmt\n");
+        e.expect("(config)#");
         o.setMgmtIP(cmdr.oltGetMgmtIP(e.before));
+        e.send("end\n");
+        e.expect("#");
         e.send("\n");
         e.expect("#");
-        o.setHostname(cmdr.oltGetHostname(e.before));
+        o.setHostname(cmdr.oltGetHostname(e.before).trim());
         o.setFlowProfiles(getFlowProfiles());
         o.setVlanTranslate(getVlanTranslationProfiles());
         o.setBwProfile(getBandWidthProfiles());
@@ -90,6 +94,21 @@ public class ControllerOlt {
                 onu = o;
             }
         }
+        return onu;
+    }
+
+    public ONU getOnuBySerial(String serial) {
+        ONU onu = null;
+        if (serial.length() < 12) {
+            throw new IllegalArgumentException("Serial invalid");
+        } else {
+            for (ONU o : getOnus()) {
+                if (o.getSerial().equals(serial)) {
+                    onu = o;
+                }
+            }
+        }
+
         return onu;
     }
 
@@ -326,7 +345,6 @@ public class ControllerOlt {
      * @return true if is connected
      */
     public boolean connect() {
-        boolean cState = false;
         if (!user.isEmpty() && !pass.isEmpty()) {
             try {
                 s = this.jsch.getSession(this.user, this.ipAccess);
@@ -385,34 +403,40 @@ public class ControllerOlt {
         String pbmp1 = "";
         String pbmp2 = "";
         if (!onu.isBridge()) {
-            String vtpVeip="";
-            String vtpIphost="";
-            String alias="";
-            for(String vtp:onu.getVlanTranslate()){
-                if(vtp.contains("VEIP")){
-                    vtpVeip=vtp.substring(vtp.indexOf("(")+1,vtp.indexOf(")"));
+            String vtpVeip = "";
+            String vtpIphost = "";
+            String alias = "";
+            for (String vtp : onu.getVlanTranslate()) {
+                if (vtp.contains("VEIP")) {
+                    vtpVeip = vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")"));
                 }
-                if(vtp.contains("IPHOST")){
-                    vtpIphost=vtp.substring(vtp.indexOf("(")+1,vtp.indexOf(")"));
+                if (vtp.contains("IPHOST")) {
+                    vtpIphost = vtp.substring(vtp.indexOf("(") + 1, vtp.indexOf(")"));
                 }
             }
-            if(onu.getAlias()!=null){
-                if(onu.getAlias().length()>1) alias = "onu " + onu.getSerial() + " alias " + onu.getAlias() + "\n";
+            if (onu.getAlias() != null) {
+                if (onu.getAlias().length() > 1) {
+                    alias = "onu " + onu.getSerial() + " alias " + onu.getAlias() + "\n";
+                }
             }
-            String command = "interface " + onu.getIfGpon() + "\n"
-                    + alias
-                    + "onu " + onu.getSerial() + " ip address " + onu.getMgmtIp() + "\n"
-                    + "onu " + onu.getSerial() + " flow-profile " + onu.getFlowProfile() + "\n"
-                    + "onu " + onu.getSerial() + " vlan-translation-profile " + vtpIphost + " iphost\n"
-                    + "onu " + onu.getSerial() + " vlan-translation-profile " + vtpVeip + " veip\n"
-                    + "!\n"
-                    + "end\n"
-                    + "copy running-config startup-config\n";
-
             e.send("conf t\n");
             e.expect("(config)#");
-            e.send(command);
-            e.expect("(config)#");
+            e.send("interface " + onu.getIfGpon() + "\n");
+            e.expect("(config-if)#");
+            e.send(alias);
+            e.expect("(config-if)#");
+            e.send("onu " + onu.getSerial() + " ip address " + onu.getMgmtIp() + "\n");
+            e.expect("(config-if)#");
+            e.send("onu " + onu.getSerial() + " flow-profile " + onu.getFlowProfile() + "\n");
+            e.expect("(config-if)#");
+            e.send("onu " + onu.getSerial() + " vlan-translation-profile " + vtpIphost + " iphost\n");
+            e.expect("(config-if)#");
+            e.send("onu " + onu.getSerial() + " vlan-translation-profile " + vtpVeip + " veip\n");
+            e.expect("(config-if)#");
+            e.send("end\n");
+            e.expect("#");
+            e.send("end\n");
+            e.expect("#");
         } else {
             for (String vtp : onu.getVlanTranslate()) {
                 if (vtp.matches(".*VEIP.*")) {
@@ -431,8 +455,7 @@ public class ControllerOlt {
                     + "onu " + onu.getSerial() + " vlan-translation-profile " + onu.getVlanTranslate() + " iphost\n"
                     + "onu " + onu.getSerial() + " vlan-translation-profile " + "" + " veip\n"
                     + "!\n"
-                    + "end\n"
-                    + "copy running-config startup-config\n";
+                    + "end\n";
 
             e.send("conf t\n");
             e.expect("(config)#");
@@ -445,13 +468,14 @@ public class ControllerOlt {
     public void removeOnu(ONU onu) {
         e.send("conf t\n");
         e.expect("(config)#");
-        e.send("interface "+onu.getIfGpon());
+        e.send("interface " + onu.getIfGpon() + "\n");
         e.expect("(config-if)#");
-        e.send("no onu "+onu.getSerial());
+        e.send("no onu " + onu.getSerial() + "\n");
         e.expect("(config-if)#");
-        e.send("onu add serial-number "+onu.getSerial());
+        e.send("onu add serial-number " + onu.getSerial() + "\n");
         e.expect("(config-if)#");
-        e.send("ex\nex\n");
+        e.send("end\n");
+        e.expect("#");
     }
 
     public void disconnect() {
@@ -463,6 +487,13 @@ public class ControllerOlt {
             }
         }
 
+    }
+    
+    public void saveConfiguration(){
+        e.send("end\n");
+        e.expect("#");
+        e.send("copy running startup\n");
+        e.expect("#");
     }
 
 }

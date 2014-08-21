@@ -153,7 +153,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="tabbedPanel" pref="521" max="32767" attributes="0"/>
+              <Component id="tabbedPanel" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -209,7 +209,8 @@
                           <Component id="jSeparator1" alignment="0" max="32767" attributes="0"/>
                           <Component id="jScrollPane1" alignment="0" pref="648" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="btSaveConf" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                               <Component id="btCleanTable" min="-2" pref="73" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btFindOnus" min="-2" pref="92" max="-2" attributes="0"/>
@@ -242,6 +243,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="btFindOnus" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btCleanTable" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btSaveConf" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="jSeparator1" min="-2" pref="10" max="-2" attributes="0"/>
@@ -391,6 +393,14 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btCleanTableActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="btSaveConf">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Save Conf"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btSaveConfActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

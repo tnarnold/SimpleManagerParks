@@ -193,7 +193,7 @@ public class ControllerOltTest {
         assertEquals(bwps.get(1), c.getBandWidthProfiles().get(1));
     }
     
-    
+    @Ignore
     @Test
     public void testProvisioningOnu(){
         ONU onu1 = new ONU();
@@ -208,12 +208,28 @@ public class ControllerOltTest {
         vtp.add("5: IPHOST (_100)");
         vtp.add("6: VEIP (_101)");
         onu1.setVlanTranslate(vtp);
-        
         c.provisioningOnu(onu1);
-        
-        ONU onuRep=c.getOnu("prks00b6150f");
-        
+        ONU onuRep=c.getOnuBySerial("prks00b6150f");
         assertEquals(onu1,onuRep);
+    }
+    
+    @Ignore
+    @Test
+    public void testRemoveOnu(){
+        System.out.println("Testing if the ONU will be removed");
+        
+        ONU onu1=new ONU(3, "prks00b6150f", "gpon2/3");
+        c.removeOnu(onu1);
+        ONU onu2=c.getOnuBySerial("prks00b6150f");
+        assertEquals(onu1,onu2 );
+    }
+    
+    @Ignore
+    @Test
+    public void testSaveConfiguration(){
+        System.out.println("Testing if configuration is saved");
+        c.saveConfiguration();
+        assertEquals("Igual", "Igual");
     }
 
 }
