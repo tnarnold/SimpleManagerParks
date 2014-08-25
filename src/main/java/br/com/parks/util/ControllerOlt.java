@@ -389,7 +389,38 @@ public class ControllerOlt {
         return true;
     }
 
-    public boolean createFlowProfile() {
+    public boolean createBandWidthProfile(String bwName, String type, String fixed, String assured, String maximum) {
+        e.send("conf t\n");
+        e.expect("(config)#");
+        e.send("gpon profile bandwidth " + bwName + "\n");
+        e.expect("(config-bw)#");
+        if (type.compareToIgnoreCase("internet")==0) {
+            e.send("traffic-type internet maximum-bandwidth " + maximum + "\n");
+        } else if (type.compareToIgnoreCase("management")==0) {
+            e.send("traffic-type management assured-bandwidth " + assured + " maximum-bandwidth " + maximum + "\n");
+        } else if (type.compareToIgnoreCase("voip")==0) {
+            e.send("traffic-type voip fixed-bandwidth " + fixed + "\n");
+        }
+        e.expect("(config-bw)#");
+        e.send("end\n");
+        e.expect("#");
+        return false;
+    }
+
+    public boolean removeBandwidthProfile(String bwName) {
+        e.send("conf t\n");
+        e.expect("(config)#");
+        e.send("no gpon profile bandwidth " + bwName + "\n");
+        e.expect("(config)#");
+        e.send("end\n");
+        e.expect("#");
+        return false;
+    }
+
+    public boolean createFlowProfile(String fName, String type, String bwProfile) {
+        e.send("conf t\n");
+        e.expect("(config)#");
+
         return false;
     }
 
@@ -488,8 +519,8 @@ public class ControllerOlt {
         }
 
     }
-    
-    public void saveConfiguration(){
+
+    public void saveConfiguration() {
         e.send("end\n");
         e.expect("#");
         e.send("copy running startup\n");

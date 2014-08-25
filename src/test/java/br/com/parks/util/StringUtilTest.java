@@ -58,7 +58,7 @@ public class StringUtilTest {
             Logger.getLogger(ControllerOlt.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    @Ignore
+
     @Test
     public void testOltGetSerial() {
         System.out.println("Test transform data of collected olt serial command:");
@@ -68,8 +68,7 @@ public class StringUtilTest {
         assertEquals(serial, cmdr.oltGetSerial(e.before));
 
     }
-    
-    @Ignore
+
     @Test
     public void testOltGetMgmtIP() {
         System.out.println("Test collecting management interface ip:");
@@ -78,7 +77,7 @@ public class StringUtilTest {
         e.expect("#");
         assertEquals(mgmtIp, cmdr.oltGetMgmtIP(e.before));
     }
-    @Ignore
+
     @Test
     public void testOltGetHostname() {
         System.out.println("Test collected hostname of OLT:");
@@ -88,7 +87,8 @@ public class StringUtilTest {
         String result = cmdr.oltGetHostname(e.before);
         assertEquals(hn, result);
     }
-    @Ignore
+
+    
     @Test
     public void testOnuGetClean() {
         System.out.println("Test if result is clean");
@@ -99,31 +99,10 @@ public class StringUtilTest {
                 + "Interface gpon2/1:\n"
                 + "Interface gpon2/2:\n"
                 + "Interface gpon2/3:\n"
-                + "    1-rt1 (prks00b6150f):\n"
-                + "	IP address 192.168.2.101/24\n"
-                + "	Flow profile: pks_routers\n"
-                + "	Ports VLAN translation profile:\n"
-                + "	    5: IPHOST (_100)\n"
-                + "	    6: VEIP (_101)\n"
-                + "    2-rt2 (prks00b25ccb):\n"
-                + "	IP address 192.168.2.102/24\n"
-                + "	Flow profile: pks_routers\n"
-                + "	Ports VLAN translation profile:\n"
-                + "	    5: IPHOST (_100)\n"
-                + "	    6: VEIP (_101)\n"
-                + "    3-br1 (prks00b63c65):\n"
-                + "	IP address 192.168.2.201/24\n"
-                + "	Flow profile: pks_bridge_2p\n"
-                + "	Ports VLAN translation profile:\n"
-                + "	    1: _101\n"
-                + "	    2: _101\n"
-                + "	    5: IPHOST (_100)\n"
-                + "    4-br2 (prks00b6ebdc):\n"
-                + "	IP address 192.168.2.202/24\n"
-                + "	Flow profile: pks_bridge_1p\n"
-                + "	Ports VLAN translation profile:\n"
-                + "	    1: _101\n"
-                + "	    5: IPHOST (_100)\n"
+                + "    1-prks00b6ebdc:\n"
+                + "    2-prks00b25ccb:\n"
+                + "    3-prks00b6150f:\n"
+                + "    4-prks00b63c65:\n"
                 + "Interface gpon2/4:";
         e.send("show gpon onu\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         e.expect("#");

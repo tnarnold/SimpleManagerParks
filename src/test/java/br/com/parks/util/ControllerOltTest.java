@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -33,7 +34,40 @@ public class ControllerOltTest {
     public void tearDown() {
         c.disconnect();
     }
-    
+
+    @Test
+    public void testCreateBandwidthProfile() {
+        System.out.println("Testing the creation and destroying of bandwidth profiles");
+        c.createBandWidthProfile("internet10mb", "internet", null, null, "10240");
+        c.createBandWidthProfile("gerencia1mb", "management", null, null, "1024");
+        c.createBandWidthProfile("voip1mb", "voip", null, null, "1024");
+        List<String> bwps = c.getBandWidthProfiles();
+        assertEquals("internet10mb,INTERNET,0,0,1024", bwps.get(0));
+        c.removeBandwidthProfile("internet10mb");
+        bwps = c.getBandWidthProfiles();
+        assertTrue(bwps.isEmpty());
+    }
+
+    @Ignore
+    @Test
+    public void testProvisioningOnu() {
+        ONU onu1 = new ONU();
+        ArrayList<String> vtp = null;
+        onu1.setIndex(2);
+        onu1.setIfGpon("gpon2/3");
+        onu1.setSerial("prks00b6150f");
+        onu1.setAlias("rt1");
+        onu1.setMgmtIp("192.168.2.101/24");
+        onu1.setFlowProfile("pks_routers");
+        vtp = new ArrayList<String>();
+        vtp.add("5: IPHOST (_100)");
+        vtp.add("6: VEIP (_101)");
+        onu1.setVlanTranslate(vtp);
+        c.provisioningOnu(onu1);
+        ONU onuRep = c.getOnuBySerial("prks00b6150f");
+        assertEquals(onu1, onuRep);
+    }
+
     @Ignore
     @Test
     public void testGetFlowProfiles() {
@@ -186,47 +220,27 @@ public class ControllerOltTest {
     @Ignore
     @Test
     public void testGetBandWidthProfiles() {
-        ArrayList<String> bwps=new ArrayList<String>();
+        ArrayList<String> bwps = new ArrayList<String>();
         bwps.add("pks_data_10Mb,INTERNET,0,0,10240");
         bwps.add("pks_mgmt_1Mb,MANAGEMENT,0,1024,1152");
         assertEquals(bwps.get(0), c.getBandWidthProfiles().get(0));
         assertEquals(bwps.get(1), c.getBandWidthProfiles().get(1));
     }
-    
+
     @Ignore
     @Test
-    public void testProvisioningOnu(){
-        ONU onu1 = new ONU();
-        ArrayList<String> vtp = null;
-        onu1.setIndex(2);
-        onu1.setIfGpon("gpon2/3");
-        onu1.setSerial("prks00b6150f");
-        onu1.setAlias("rt1");
-        onu1.setMgmtIp("192.168.2.101/24");
-        onu1.setFlowProfile("pks_routers");
-        vtp = new ArrayList<String>();
-        vtp.add("5: IPHOST (_100)");
-        vtp.add("6: VEIP (_101)");
-        onu1.setVlanTranslate(vtp);
-        c.provisioningOnu(onu1);
-        ONU onuRep=c.getOnuBySerial("prks00b6150f");
-        assertEquals(onu1,onuRep);
-    }
-    
-    @Ignore
-    @Test
-    public void testRemoveOnu(){
+    public void testRemoveOnu() {
         System.out.println("Testing if the ONU will be removed");
-        
-        ONU onu1=new ONU(3, "prks00b6150f", "gpon2/3");
+
+        ONU onu1 = new ONU(3, "prks00b6150f", "gpon2/3");
         c.removeOnu(onu1);
-        ONU onu2=c.getOnuBySerial("prks00b6150f");
-        assertEquals(onu1,onu2 );
+        ONU onu2 = c.getOnuBySerial("prks00b6150f");
+        assertEquals(onu1, onu2);
     }
-    
+
     @Ignore
     @Test
-    public void testSaveConfiguration(){
+    public void testSaveConfiguration() {
         System.out.println("Testing if configuration is saved");
         c.saveConfiguration();
         assertEquals("Igual", "Igual");
