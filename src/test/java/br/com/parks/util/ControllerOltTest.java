@@ -36,16 +36,42 @@ public class ControllerOltTest {
     }
 
     @Test
+    public void testGetEthProfiles() {
+        System.out.println("Testing if is getting ethernet profiles profiles");
+        List<String> epExp = new ArrayList<String>();
+        epExp.add("auto-on,enabled,---,---");
+        epExp.add("f-100m,disabled,speed-100M,full-duplex");
+        epExp.add("f-10m,disabled,speed-10M,full-duplex");
+        epExp.add("f-1g,disabled,speed-1000M,full-duplex");
+        epExp.add("h-100m,disabled,speed-100M,half-duplex");
+        epExp.add("h-10m,disabled,speed-10M,half-duplex");
+        List<String> ethProfiles = c.getEthProfiles();
+        assertEquals(epExp, ethProfiles);
+
+    }
+
+    @Ignore
+    @Test
     public void testCreateBandwidthProfile() {
         System.out.println("Testing the creation and destroying of bandwidth profiles");
         c.createBandWidthProfile("internet10mb", "internet", null, null, "10240");
-        c.createBandWidthProfile("gerencia1mb", "management", null, null, "1024");
-        c.createBandWidthProfile("voip1mb", "voip", null, null, "1024");
+        c.createBandWidthProfile("gerencia1mb", "management", null, "1024", "1152");
+        c.createBandWidthProfile("voip1mb", "voip", "1024", null, null);
         List<String> bwps = c.getBandWidthProfiles();
-        assertEquals("internet10mb,INTERNET,0,0,1024", bwps.get(0));
-        c.removeBandwidthProfile("internet10mb");
-        bwps = c.getBandWidthProfiles();
-        assertTrue(bwps.isEmpty());
+        assertEquals("internet10mb,INTERNET,0,0,10240", bwps.get(1));
+        assertEquals("gerencia1mb,MANAGEMENT,0,1024,1152", bwps.get(0));
+        assertEquals("voip1mb,VOIP,1024,0,0", bwps.get(2));
+
+    }
+
+    @Ignore
+    @Test
+    public void testCreateFlowProfile() {
+        ArrayList<String> fList = new ArrayList<String>();
+        fList.add("pks_bridge_1p,1,IPHOST,100,-,DISABLED,0,pks_mgmt_1Mb,");
+        c.createFlowProfile(fList);
+        List<String> fProfiles = c.getFlowProfiles();
+        assertEquals(fList.get(0), fProfiles.get(0));
     }
 
     @Ignore
@@ -244,6 +270,17 @@ public class ControllerOltTest {
         System.out.println("Testing if configuration is saved");
         c.saveConfiguration();
         assertEquals("Igual", "Igual");
+    }
+
+    @Ignore
+    @Test
+    public void testRemoveBandwidthProfile() {
+        System.out.println("Destroying bandwidth profiles");
+        c.removeBandwidthProfile("internet10mb");
+        c.removeBandwidthProfile("gerencia1mb");
+        c.removeBandwidthProfile("voip1mb");
+        List<String> bwps = c.getBandWidthProfiles();
+        assertTrue(bwps.isEmpty());
     }
 
 }

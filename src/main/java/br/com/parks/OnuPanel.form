@@ -64,7 +64,7 @@
               <Component id="pnOnuProv" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pnOnuConf" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="25" max="32767" attributes="0"/>
+              <EmptySpace pref="27" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="103" alignment="1" groupAlignment="3" attributes="0">
                       <Component id="btProvisioningAndConfig" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
@@ -123,10 +123,9 @@
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="lbVtpPbmp" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
                               <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="1" attributes="0">
                                       <Component id="lbMgmtIP" min="-2" max="-2" attributes="0"/>
                                       <Component id="lbAlias" min="-2" max="-2" attributes="0"/>
@@ -151,17 +150,29 @@
                                       </Group>
                                   </Group>
                               </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lbEth1Prof" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="cbEth1Prof" max="32767" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lbVtpPbmp" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="cbVtpPbmp" pref="228" max="32767" attributes="0"/>
+                              <Component id="cbVtpPbmp" pref="225" max="32767" attributes="0"/>
                               <Component id="cbVtpVeip" max="32767" attributes="0"/>
                               <Component id="cbFlowProfile" max="32767" attributes="0"/>
                               <Component id="cbVtpIpHost" alignment="1" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lbEth2Prof" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="cbEth2Prof" max="32767" attributes="0"/>
+                          <EmptySpace min="-2" pref="229" max="-2" attributes="0"/>
                           <Component id="btProvisioning" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -195,9 +206,17 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="cbVtpPbmp" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbVtpPbmp" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbEth1Prof" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbEth1Prof" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="btProvisioning" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btProvisioning" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                          <Component id="cbEth2Prof" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lbEth2Prof" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -293,6 +312,36 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ckbBridgeActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbEth1Prof">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="1">
+                <StringItem index="0" value="--"/>
+              </StringArray>
+            </Property>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbEth1Prof">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Eth1. Prof.:"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbEth2Prof">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="1">
+                <StringItem index="0" value="--"/>
+              </StringArray>
+            </Property>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbEth2Prof">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Eth2. Prof.:"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

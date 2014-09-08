@@ -394,11 +394,11 @@ public class ControllerOlt {
         e.expect("(config)#");
         e.send("gpon profile bandwidth " + bwName + "\n");
         e.expect("(config-bw)#");
-        if (type.compareToIgnoreCase("internet")==0) {
+        if (type.compareToIgnoreCase("internet") == 0) {
             e.send("traffic-type internet maximum-bandwidth " + maximum + "\n");
-        } else if (type.compareToIgnoreCase("management")==0) {
+        } else if (type.compareToIgnoreCase("management") == 0) {
             e.send("traffic-type management assured-bandwidth " + assured + " maximum-bandwidth " + maximum + "\n");
-        } else if (type.compareToIgnoreCase("voip")==0) {
+        } else if (type.compareToIgnoreCase("voip") == 0) {
             e.send("traffic-type voip fixed-bandwidth " + fixed + "\n");
         }
         e.expect("(config-bw)#");
@@ -417,7 +417,15 @@ public class ControllerOlt {
         return false;
     }
 
-    public boolean createFlowProfile(String fName, String type, String bwProfile) {
+    public boolean createFlowProfile(List<String> flowProfiles) {
+        for (String flow : flowProfiles) {
+            String[] fts = flow.split(",");
+            for (int i = 0; i < fts.length - 1; i++) {
+                System.out.println(fts[i]);
+            }
+
+        }
+
         e.send("conf t\n");
         e.expect("(config)#");
 
@@ -525,6 +533,19 @@ public class ControllerOlt {
         e.expect("#");
         e.send("copy running startup\n");
         e.expect("#");
+    }
+
+    public List<String> getEthProfiles() {
+        ArrayList<String> ethps = new ArrayList<String>();
+        e.send("show gpon profile ethernet\n");
+        e.expect("#");
+        String[] ethp = e.before.split("[\\n\\r]+");
+        if (ethp.length > 1) {
+            for (int i = 2; i < ethp.length - 1; i++) {
+                ethps.add(ethp[i].replaceAll("[|]", ",").replaceAll("\\s+", ""));
+            }
+        }
+        return ethps;
     }
 
 }

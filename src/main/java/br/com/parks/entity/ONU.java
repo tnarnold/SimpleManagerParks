@@ -192,6 +192,11 @@ public class ONU {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "[ SERIAL="+serial+" ]"; 
+    }
     
     
 

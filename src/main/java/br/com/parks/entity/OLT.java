@@ -25,6 +25,7 @@ public class OLT {
     private List<String> flowProfiles;
     private List<String> vlanTranslate;
     private List<String> bwProfile;
+    private List<String> ethProfiles;
     private List<ONU> onus;
 
     public String getMgmtIP() {
@@ -106,6 +107,16 @@ public class OLT {
     public void setBwProfile(List<String> bwProfile) {
         this.bwProfile = bwProfile;
     }
+
+    public List<String> getEthProfiles() {
+        return ethProfiles;
+    }
+
+    public void setEthProfiles(List<String> ethProfiles) {
+        this.ethProfiles = ethProfiles;
+    }
+    
+    
 
     @Override
     public int hashCode() {

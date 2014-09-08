@@ -85,6 +85,10 @@ public class OnuPanel extends javax.swing.JPanel {
         lbVtpPbmp = new javax.swing.JLabel();
         btProvisioning = new javax.swing.JButton();
         ckbBridge = new javax.swing.JCheckBox();
+        cbEth1Prof = new javax.swing.JComboBox();
+        lbEth1Prof = new javax.swing.JLabel();
+        cbEth2Prof = new javax.swing.JComboBox();
+        lbEth2Prof = new javax.swing.JLabel();
         btReload = new javax.swing.JButton();
         pnOnuConf = new javax.swing.JPanel();
         txtLanIp = new javax.swing.JTextField();
@@ -163,6 +167,16 @@ public class OnuPanel extends javax.swing.JPanel {
             }
         });
 
+        cbEth1Prof.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--" }));
+        cbEth1Prof.setEnabled(false);
+
+        lbEth1Prof.setText("Eth1. Prof.:");
+
+        cbEth2Prof.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "--" }));
+        cbEth2Prof.setEnabled(false);
+
+        lbEth2Prof.setText("Eth2. Prof.:");
+
         javax.swing.GroupLayout pnOnuProvLayout = new javax.swing.GroupLayout(pnOnuProv);
         pnOnuProv.setLayout(pnOnuProvLayout);
         pnOnuProvLayout.setHorizontalGroup(
@@ -170,10 +184,9 @@ public class OnuPanel extends javax.swing.JPanel {
             .addGroup(pnOnuProvLayout.createSequentialGroup()
                 .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnOnuProvLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lbVtpPbmp)
+                        .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(pnOnuProvLayout.createSequentialGroup()
+                                .addGap(21, 21, 21)
                                 .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lbMgmtIP)
                                     .addComponent(lbAlias))
@@ -190,15 +203,26 @@ public class OnuPanel extends javax.swing.JPanel {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                             .addComponent(lbFlowProfile)
-                                            .addComponent(lbVtpIpHost))))))
+                                            .addComponent(lbVtpIpHost)))))
+                            .addGroup(pnOnuProvLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lbEth1Prof)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cbEth1Prof, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbVtpPbmp)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbVtpPbmp, 0, 228, Short.MAX_VALUE)
+                            .addComponent(cbVtpPbmp, 0, 225, Short.MAX_VALUE)
                             .addComponent(cbVtpVeip, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cbFlowProfile, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cbVtpIpHost, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnOnuProvLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap()
+                        .addComponent(lbEth2Prof)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbEth2Prof, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(229, 229, 229)
                         .addComponent(btProvisioning)))
                 .addContainerGap())
         );
@@ -224,9 +248,15 @@ public class OnuPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cbVtpPbmp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbVtpPbmp))
+                    .addComponent(lbVtpPbmp)
+                    .addComponent(cbEth1Prof, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbEth1Prof))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btProvisioning)
+                .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btProvisioning)
+                    .addGroup(pnOnuProvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cbEth2Prof, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbEth2Prof)))
                 .addContainerGap())
         );
 
@@ -421,7 +451,7 @@ public class OnuPanel extends javax.swing.JPanel {
                 .addComponent(pnOnuProv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnOnuConf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btProvisioningAndConfig, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -498,6 +528,8 @@ public class OnuPanel extends javax.swing.JPanel {
     private javax.swing.JButton btProvisioningAndConfig;
     private javax.swing.JButton btReload;
     private javax.swing.JButton btRemoveOnu;
+    private javax.swing.JComboBox cbEth1Prof;
+    private javax.swing.JComboBox cbEth2Prof;
     private javax.swing.JComboBox cbFlowProfile;
     private javax.swing.JComboBox cbVtpIpHost;
     private javax.swing.JComboBox cbVtpPbmp;
@@ -510,6 +542,8 @@ public class OnuPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lbAlias;
     private javax.swing.JLabel lbDefaultGw;
     private javax.swing.JLabel lbDhcpRangeLast;
+    private javax.swing.JLabel lbEth1Prof;
+    private javax.swing.JLabel lbEth2Prof;
     private javax.swing.JLabel lbFlowProfile;
     private javax.swing.JLabel lbLanIp;
     private javax.swing.JLabel lbMgmtIP;
