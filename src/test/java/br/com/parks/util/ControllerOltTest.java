@@ -26,7 +26,7 @@ public class ControllerOltTest {
 
     @Before
     public void setUp() {
-        c = new ControllerOlt("192.168.201.130", "admin", "parks");
+        c = new ControllerOlt("192.168.201.127", "admin", "parks");
         c.connect();
     }
 
@@ -34,7 +34,26 @@ public class ControllerOltTest {
     public void tearDown() {
         c.disconnect();
     }
-
+    
+    @Ignore
+    @Test
+    public void testSetHostname(){
+        
+    }
+    
+    @Test
+    public void testReload(){
+        System.out.println("Testing if reload");
+        c.reload();
+        
+    }
+    
+    @Test
+    public void testeGetOnuModels(){
+        
+    }
+    
+    @Ignore
     @Test
     public void testGetEthProfiles() {
         System.out.println("Testing if is getting ethernet profiles profiles");

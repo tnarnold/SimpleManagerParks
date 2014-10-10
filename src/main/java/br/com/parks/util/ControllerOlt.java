@@ -19,7 +19,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * The objective for this class is to execute all functions for the OLT and 
+ * return results has objects in the 
  * @author tiago
  */
 public class ControllerOlt {
@@ -202,14 +203,12 @@ public class ControllerOlt {
                                     onuTemp.setAlias(pOnu[p].substring(pOnu[p].indexOf("-") + 1, pOnu[p].indexOf("(")).trim());
                                 }
                             }
-
                             if (pOnu[p].contains("IP address")) {
                                 onuTemp.setMgmtIp(pOnu[p].replaceAll("IP address ", "").trim());
                             }
                             if (pOnu[p].contains("Flow profile:")) {
                                 onuTemp.setFlowProfile(pOnu[p].replaceAll("Flow profile: ", "").trim());
                             }
-
                             if (pOnu[p].contains("Ports VLAN translation")) {
                                 ArrayList<String> vtps = new ArrayList<String>();
                                 String rhead = pOnu[p].replaceAll("Ports VLAN translation profile:\n#", "");
@@ -221,7 +220,6 @@ public class ControllerOlt {
                                     }
                                 }
                                 onuTemp.setVlanTranslate(vtps);
-
                             }
                         }
                         onuTemp.setOlt(olt);
@@ -229,11 +227,9 @@ public class ControllerOlt {
                             onus.add(onuTemp);
                         }
                     }
-
                 }
             }
         }
-
         return onus;
     }
 
@@ -535,6 +531,13 @@ public class ControllerOlt {
         e.expect("#");
     }
 
+    public void reload() {
+        e.send("reload\n");
+        e.expect("Save the current configuration");
+        e.send("n\n");
+        e.expect("Restart system");
+    }
+
     public List<String> getEthProfiles() {
         ArrayList<String> ethps = new ArrayList<String>();
         e.send("show gpon profile ethernet\n");
@@ -547,5 +550,23 @@ public class ControllerOlt {
         }
         return ethps;
     }
-
+    
+    public List<String> getOnuModels(String iface){
+        /*
+        tem que implementar
+        */
+        e.send("show interface "+iface+" onu model\n");
+        e.expect("#");
+        return new ArrayList<String>();
+    }
+    
+    
+    public List<String> getOnuStatus(String iface){
+        /*
+        tem que implementar
+        */
+        e.send("show interface "+iface+" onu status\n");
+        e.expect("#");
+        return new ArrayList<String>();
+    }
 }
